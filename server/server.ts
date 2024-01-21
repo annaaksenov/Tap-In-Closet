@@ -84,7 +84,7 @@ app.post('/api/auth/login', async (req, res, next) => {
     if (!username || !password) {
       throw new ClientError(401, 'invalid login');
     }
-    const sql = 'select "userId", "hashedPassword" from "users" where "username" = $1 returning *';
+    const sql = 'select "userId", "hashedPassword" from "users" where "username" = $1';
     const params = [username]
     const result = await db.query<User>(sql, params);
     const [user] = result.rows;
@@ -107,6 +107,16 @@ app.post('/api/auth/login', async (req, res, next) => {
 app.get('/api/closet', authMiddleware, async (req, res, next) => {
   try {
     const sql = 'select * from "closet" where "userId" = $1 order by "itemId" desc;';
+    const result = await db.query<User>(sql, [req.user?.userId]);
+    res.status(201).json(result.rows);
+  } catch (err) {
+    next(err);
+  }
+})
+
+app.get('/api/outfits', authMiddleware, async (req, res, next) => {
+  try {
+    const sql = 'select * from "outfits" where "userId" = $1 order by "outfitId" desc;';
     const result = await db.query<User>(sql, [req.user?.userId]);
     res.status(201).json(result.rows);
   } catch (err) {

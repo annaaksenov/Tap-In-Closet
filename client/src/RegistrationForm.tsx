@@ -20,7 +20,8 @@ async function handleSubmit(event: FormEvent<HTMLFormElement>) {
       throw new Error(`fetch Error ${res.status}`);
     }
     const user = await res.json();
-    console.log('Registered', user);
+    // return user;
+     console.log('Registered', user);
   } catch (err) {
     alert(`Error registering user ${err}`);
   } finally {
