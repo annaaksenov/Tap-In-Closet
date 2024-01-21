@@ -11,8 +11,8 @@ CREATE TABLE "users" (
   "username" varchar(255),
   "hashedPassword" varchar(255),
   "email" varchar(255),
-  "createdAt" timestamp(6),
-  "updatedAt" timestamp(6)
+  "createdAt" timestamp(6) not null default now(),
+  "updatedAt" timestamp(6) not null default now()
 );
 
 CREATE TABLE "closet" (
@@ -22,22 +22,22 @@ CREATE TABLE "closet" (
   "category" varchar(100),
   "description" text,
   "hashtag" text,
-  "createdAt" timestamp
+  "createdAt" timestamp(6) not null default now()
 );
 
 CREATE TABLE "outfits" (
   "outfitId" serial PRIMARY KEY,
   "userId" integer,
   "name" varchar(255),
-  "createdAt" timestamp(6),
-  "updatedAt" timestamp(6)
+  "createdAt" timestamp(6) not null default now(),
+  "updatedAt" timestamp(6) not null default now()
 );
 
 CREATE TABLE "favorites" (
   "favoriteId" serial PRIMARY KEY,
   "userId" integer,
   "outfitId" integer,
-  "createdAt" timestamp(6)
+  "createdAt" timestamp(6) not null default now()
 );
 
 ALTER TABLE "closet" ADD FOREIGN KEY ("userId") REFERENCES "users" ("userId");
