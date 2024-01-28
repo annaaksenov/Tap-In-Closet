@@ -1,7 +1,11 @@
 import { Link } from 'react-router-dom';
 import { type FormEvent, useState } from 'react';
 
-export function LoginForm() {
+type Props = {
+  onSignIn: () => void;
+};
+
+export function LoginForm({ onSignIn }: Props) {
    const [isLoading, setIsLoading] = useState(false);
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
@@ -20,8 +24,10 @@ export function LoginForm() {
         throw new Error(`fetch Error ${res.status}`);
       }
       const { user, token } = await res.json();
+      sessionStorage.setItem('token', token);
       //return {user, token};
        console.log('Signed In', user, '; received token:', token);
+       onSignIn();
     } catch (err) {
       alert(`Error signing in: ${err}`);
     } finally {
@@ -30,7 +36,7 @@ export function LoginForm() {
   }
   return (
     <>
-    <div className="container registration">
+    <div className="register-container">
       <div className="row">
         <div className="column-full">
           <h2>Login</h2>

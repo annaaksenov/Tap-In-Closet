@@ -1,5 +1,6 @@
-.container {
-  background-color: #D0ECAD
+.register-container {
+  background-color: #D0ECAD;
+  padding: 5px 10px;
 }
 
 * {
@@ -15,6 +16,6 @@ font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
       background-color: #729B51;
 }
 
-/* p {
-  margin: 5px auto;
-} */
+h3 {
+  cursor: pointer;
+}

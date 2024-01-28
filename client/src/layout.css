@@ -1,12 +1,38 @@
-.container {
-  /* max-width: 575px;
+/* .container {
+   max-width: 575px;
   margin: 0 auto;
-  padding: 0 20px; */
+  padding: 0 20px;
 
+} */
+
+.tap-container {
+  margin: 1px;
+}
+
+.header-container {
+  padding: 5px 10px 0;
+  background-color: #D0ECAD
+}
+
+.closet-container {
+  margin: 0;
+  padding: 10px 15px;
 }
 
  h2 {
   margin: 10px 0;
+ }
+
+ h3 {
+   margin: 5px 0;
+ }
+
+ p.tab {
+  margin: 10px 0 0;
+ }
+
+ .selected {
+  border-bottom: solid black 1.7px;
  }
 
 .row {
@@ -15,7 +41,7 @@
   /* flex-wrap: wrap; */
 }
 
-.registration {
+.register-container {
   max-width: 300px;
   min-width: 300px;
   margin: 200px auto;
@@ -87,18 +113,18 @@
   padding: 5px;
 }
 
-/* @media screen and (width >=768px) {
-  .container {
-    max-width: 900px;
+ @media screen and (width >=768px) {
+  .tabs {
+    max-width: 600px;
+    margin: 0 auto;
   }
 
-  .column-full,
+  /* .column-full,
   .column-half {
     padding: 0 0.75rem;
   }
 
    .column-half {
     width: 50%;
-  }
+  } */
 }
-*/

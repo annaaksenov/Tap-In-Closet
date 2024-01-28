@@ -30,7 +30,7 @@ async function handleSubmit(event: FormEvent<HTMLFormElement>) {
 }
   return (
     <>
-    <div className="container registration">
+    <div className="register-container ">
       <div className="row">
         <div className="column-full">
           <h2>Sign up</h2>
