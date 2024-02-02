@@ -11,12 +11,21 @@
 
 .header-container {
   padding: 5px 10px 0;
-  background-color: #D0ECAD
 }
 
 .closet-container {
   margin: 0;
   padding: 10px 15px;
+}
+
+.add-container {
+  height: 100vh;
+}
+
+.add-item {
+  max-width: 500px;
+  min-width: 500px;
+  margin: 0 auto;
 }
 
  h2 {
@@ -46,6 +55,12 @@
   min-width: 300px;
   margin: 200px auto;
   border-radius: 6px;
+}
+
+.box {
+  height: 300px;
+  width: 250px;
+  margin: 5px auto;
 }
 
 .column-full,
@@ -109,8 +124,21 @@
   margin-bottom: 1rem;
 }
 
+.margin-top {
+  margin-top: 1rem;
+}
+
 .text-padding {
   padding: 5px;
+}
+
+.padding-5 {
+  padding-top: 5px;
+  padding-left: 5px;
+}
+
+.left {
+  margin-right: auto;
 }
 
  @media screen and (width >=768px) {

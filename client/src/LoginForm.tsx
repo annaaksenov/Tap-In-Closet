@@ -1,11 +1,9 @@
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { type FormEvent, useState } from 'react';
+//import { TapInCloset } from './TapInCloset';
 
-type Props = {
-  onSignIn: () => void;
-};
-
-export function LoginForm({ onSignIn }: Props) {
+export function LoginForm() {
+  const navigate = useNavigate();
    const [isLoading, setIsLoading] = useState(false);
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
@@ -27,11 +25,11 @@ export function LoginForm({ onSignIn }: Props) {
       sessionStorage.setItem('token', token);
       //return {user, token};
        console.log('Signed In', user, '; received token:', token);
-       onSignIn();
     } catch (err) {
       alert(`Error signing in: ${err}`);
     } finally {
       setIsLoading(false);
+      navigate('/header');
     }
   }
   return (
