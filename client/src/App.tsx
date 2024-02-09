@@ -3,7 +3,6 @@ import './App.css';
 import { Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import { RegistrationForm } from './RegistrationForm';
 import { LoginForm } from './LoginForm';
-//import { TapInCloset } from './TapInCloset';
 import { useEffect, useState } from 'react';
 import { Header } from './Header';
 import { AddItem } from './AddItem';
@@ -18,6 +17,15 @@ export default function App() {
     'outfits' - outfits tab
 */
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+
+  function logout() {
+    sessionStorage.removeItem('token')
+    setIsAuthenticated(false);
+  }
+
+  function login() {
+    setIsAuthenticated(true);
+  }
   useEffect(() => {
     // Call server and/or check localStorage for authentication
     // Then set auth state
@@ -31,11 +39,11 @@ return (
     <>
     <Routes>
         <Route path='/' element={<RegistrationForm/>}/>
-        <Route path='login' element={<LoginForm/>}/>
+        <Route path='login' element={<LoginForm login={login}/>}/>
         <Route
           path='header'
           element={<RequireAuth isAuthenticated={isAuthenticated}>
-            <Header setIsAuthenticated={setIsAuthenticated}/>
+            <Header logout={logout}/>
             </RequireAuth>}
         />
         <Route
@@ -51,8 +59,9 @@ return (
 
 function RequireAuth({ children, isAuthenticated}) {
   const location = useLocation();
+  console.log('Pre isAuth', isAuthenticated);
   if (!isAuthenticated) {
-    console.log('isAuth', isAuthenticated);
+    console.log('Post isAuth', isAuthenticated);
      return <Navigate to="/login" state={{ from: location }} replace />;
   }
 return children;

@@ -70,6 +70,7 @@ if (!layer || !top || !bottom || !dress || !shoe || !accessory) return null;}*/
         </div>
         <div className="column-half d-flex">
           <ul className="ulist">
+            {/* {if category === layer ? {list} : } */}
           </ul>
         </div>
       </div>

@@ -2,7 +2,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { type FormEvent, useState } from 'react';
 //import { TapInCloset } from './TapInCloset';
 
-export function LoginForm() {
+export function LoginForm({login}) {
   const navigate = useNavigate();
    const [isLoading, setIsLoading] = useState(false);
 
@@ -29,6 +29,7 @@ export function LoginForm() {
       alert(`Error signing in: ${err}`);
     } finally {
       setIsLoading(false);
+      login();
       navigate('/header');
     }
   }

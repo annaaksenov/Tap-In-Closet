@@ -141,6 +141,11 @@
   margin-right: auto;
 }
 
+img {
+  width: 100%;
+  object-fit: cover;
+}
+
  @media screen and (width >=768px) {
   .tabs {
     max-width: 600px;

@@ -9,6 +9,7 @@ import {
   ClientError,
   defaultMiddleware,
   errorMiddleware,
+  uploadsMiddleware
 } from './lib/index.js';
 
 type User = {
@@ -19,6 +20,12 @@ type User = {
 type Auth = {
   username: string;
   password: string;
+};
+
+type Item = {
+  imageId: number;
+  image: string;
+  category: string;
 };
 
 const connectionString =
@@ -64,7 +71,7 @@ app.post('/api/auth/sign-up', async (req, res, next) => {
       throw new ClientError(400, 'username and password are required fields');
     }
     const hashedPassword = await argon2.hash(password);
-    const sql = 'insert into "users" ("username", "hashedPassword") values ($1, $2) returning *';
+    const sql = 'insert into "users" ("username", "hashedPassword") values ($1, $2) returning *;';
     const params = [username, hashedPassword];
     const result = await db.query<User>(sql, params);
     const [user] = result.rows;
@@ -80,7 +87,7 @@ app.post('/api/auth/login', async (req, res, next) => {
     if (!username || !password) {
       throw new ClientError(401, 'invalid login');
     }
-    const sql = 'select "userId", "hashedPassword" from "users" where "username" = $1';
+    const sql = 'select "userId", "hashedPassword" from "users" where "username" = $1;';
     const params = [username]
     const result = await db.query<User>(sql, params);
     const [user] = result.rows;
@@ -101,14 +108,37 @@ app.post('/api/auth/login', async (req, res, next) => {
 });
 
 app.get('/api/closet', authMiddleware, async (req, res, next) => {
+  console.log('called GET for closet', req.user);
   try {
-    const sql = 'select * from "closet" where "userId" = $1 order by "itemId" desc;';
-    const result = await db.query<User>(sql, [req.user?.userId]);
+     const sql = 'select * from "closet" where "userId" = $1  order by "itemId" desc;';
+     const result = await db.query<User>(sql, [req.user?.userId]);
     res.status(201).json(result.rows);
   } catch (err) {
     next(err);
   }
-})
+});
+
+// On image variable, I an assembling the image not destructuring it, like category.
+app.post('/api/upload/closet', authMiddleware, uploadsMiddleware.single('image'), async (req, res, next) => {
+  console.log('body and user:', req.file, req.body, req.user);
+  try {
+    if (!req.user) {
+      throw new ClientError(401, 'not authenticated');
+    }
+    const image = `/images/${req.file?.filename}`;
+    const { category } = req.body as Partial<Item>;
+    if (!image || !category) {
+      throw new ClientError(401, 'requires an image and a category to be selected');
+    }
+    const sql = 'insert into "closet" ("image", "category", "userId") values ($1, $2, $3) returning *;';
+    const params = [image, category, req.user?.userId];
+    const result = await db.query<Item>(sql, params);
+    res.status(201).json(result.rows);
+  } catch (err) {
+    console.error('Error processing request:', err);
+    next(err);
+  }
+});
 
 app.get('/api/outfits', authMiddleware, async (req, res, next) => {
   try {

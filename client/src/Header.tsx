@@ -1,12 +1,13 @@
 import {FaRegUserCircle} from 'react-icons/fa';
-import { Outlet } from 'react-router-dom';
+import { Outlet, useNavigate } from 'react-router-dom';
 import { Closet } from './Closet';
 //import { AddItem } from './AddItem';
 
-export function Header({setIsAuthenticated}) {
-
+export function Header({logout}) {
+const navigate = useNavigate();
   function handleLogOut() {
-    setIsAuthenticated(false);
+    logout();
+    navigate('/login');
   };
   return (
     <>
