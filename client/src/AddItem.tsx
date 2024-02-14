@@ -22,6 +22,9 @@ export function AddItem() {
         throw new Error(`fetch Error ${res.status}`);
       }
       const {image, category} = await res.json();
+      if (!image || !category) {
+        throw new Error('Image or category not selected');
+      }
       console.log('image', image, 'category', category);
   } catch (err) {
     alert(`Error adding item ${err}`)
