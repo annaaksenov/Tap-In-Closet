@@ -1,12 +1,47 @@
-.container {
-  /* max-width: 575px;
+/* .container {
+   max-width: 575px;
   margin: 0 auto;
-  padding: 0 20px; */
+  padding: 0 20px;
 
+} */
+
+.tap-container {
+  margin: 1px;
+}
+
+.header-container {
+  padding: 5px 10px 0;
+}
+
+.closet-container {
+  margin: 0;
+  padding: 10px 15px;
+}
+
+.add-container {
+  height: 100vh;
+}
+
+.add-item {
+  max-width: 500px;
+  min-width: 500px;
+  margin: 0 auto;
 }
 
  h2 {
   margin: 10px 0;
+ }
+
+ h3 {
+   margin: 5px 0;
+ }
+
+ p.tab {
+  margin: 10px 0 0;
+ }
+
+ .selected {
+  border-bottom: solid black 1.7px;
  }
 
 .row {
@@ -15,11 +50,17 @@
   /* flex-wrap: wrap; */
 }
 
-.registration {
+.register-container {
   max-width: 300px;
   min-width: 300px;
   margin: 200px auto;
   border-radius: 6px;
+}
+
+.box {
+  height: 300px;
+  width: 250px;
+  margin: 5px auto;
 }
 
 .column-full,
@@ -83,22 +124,40 @@
   margin-bottom: 1rem;
 }
 
+.margin-top {
+  margin-top: 1rem;
+}
+
 .text-padding {
   padding: 5px;
 }
 
-/* @media screen and (width >=768px) {
-  .container {
-    max-width: 900px;
+.padding-5 {
+  padding-top: 5px;
+  padding-left: 5px;
+}
+
+.left {
+  margin-right: auto;
+}
+
+img {
+  width: 100%;
+  object-fit: cover;
+}
+
+ @media screen and (width >=768px) {
+  .tabs {
+    max-width: 600px;
+    margin: 0 auto;
   }
 
-  .column-full,
+  /* .column-full,
   .column-half {
     padding: 0 0.75rem;
   }
 
    .column-half {
     width: 50%;
-  }
+  } */
 }
-*/

@@ -1,7 +1,9 @@
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { type FormEvent, useState } from 'react';
+//import { TapInCloset } from './TapInCloset';
 
-export function LoginForm() {
+export function LoginForm({login}) {
+  const navigate = useNavigate();
    const [isLoading, setIsLoading] = useState(false);
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
@@ -20,17 +22,20 @@ export function LoginForm() {
         throw new Error(`fetch Error ${res.status}`);
       }
       const { user, token } = await res.json();
+      sessionStorage.setItem('token', token);
       //return {user, token};
        console.log('Signed In', user, '; received token:', token);
     } catch (err) {
       alert(`Error signing in: ${err}`);
     } finally {
       setIsLoading(false);
+      login();
+      navigate('/header');
     }
   }
   return (
     <>
-    <div className="container registration">
+    <div className="register-container">
       <div className="row">
         <div className="column-full">
           <h2>Login</h2>

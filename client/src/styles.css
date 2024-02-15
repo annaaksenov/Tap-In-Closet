@@ -1,5 +1,23 @@
-.container {
+.register-container {
+  background-color: #D0ECAD;
+  padding: 5px 10px;
+}
+
+.add-container,
+.header-container {
   background-color: #D0ECAD
+}
+
+.border-bottom {
+  border-bottom: 1.5px solid black;
+}
+
+.box {
+  background-color: rgb(255, 255, 255);
+}
+
+.red {
+  color: red;
 }
 
 * {
@@ -15,6 +33,14 @@ font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
       background-color: #729B51;
 }
 
-/* p {
-  margin: 5px auto;
-} */
+.cursor {
+  cursor: pointer;
+}
+
+.link {
+  color:black
+}
+
+.link:hover {
+  color: black;
+}

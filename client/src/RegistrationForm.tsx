@@ -1,7 +1,8 @@
 import { type FormEvent, useState } from "react";
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 export function RegistrationForm() {
+const navigate = useNavigate();
 const [isLoading, setIsLoading] = useState(false);
 
 async function handleSubmit(event: FormEvent<HTMLFormElement>) {
@@ -26,11 +27,12 @@ async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     alert(`Error registering user ${err}`);
   } finally {
     setIsLoading(false);
+    navigate('/login');
   }
 }
   return (
     <>
-    <div className="container registration">
+    <div className="register-container ">
       <div className="row">
         <div className="column-full">
           <h2>Sign up</h2>

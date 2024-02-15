@@ -1,23 +1,14 @@
 //import { useEffect, useState } from 'react';
 import './App.css';
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import { RegistrationForm } from './RegistrationForm';
 import { LoginForm } from './LoginForm';
+import { useEffect, useState } from 'react';
+import { Header } from './Header';
+import { AddItem } from './AddItem';
+//import { Closet } from './Closet';
 
 export default function App() {
-/*{  {const [serverData, setServerData] = useState('');}
-{useEffect(() => {
-  async function readServerData() {
-    const resp = await fetch('/api/hello');
-    const data = await resp.json();
-
-    console.log('Data from server:', data);
-
-    setServerData(data.message);
-  }
-
-  readServerData();
-}, []);}}*/
 /* The current page that should display
     'sign-up' - the registration page
     'log-in' - the log in page
@@ -25,13 +16,53 @@ export default function App() {
     'dress-me' - the dress me tab / mode
     'outfits' - outfits tab
 */
-// const [page, setPage] = useState<PageTpe>('sign-up');
-  return (
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+
+  function logout() {
+    sessionStorage.removeItem('token')
+    setIsAuthenticated(false);
+  }
+
+  function login() {
+    setIsAuthenticated(true);
+  }
+  useEffect(() => {
+    // Call server and/or check localStorage for authentication
+    // Then set auth state
+      const token = sessionStorage.getItem('token');
+      console.log('token', token);
+      if (token) {
+       setIsAuthenticated(true);
+      }
+  }, []);
+return (
     <>
-      <Routes>
-        <Route path='/' element={<RegistrationForm/>} />
-          <Route path='login' element={<LoginForm/>} />
-      </Routes>
+    <Routes>
+        <Route path='/' element={<RegistrationForm/>}/>
+        <Route path='login' element={<LoginForm login={login}/>}/>
+        <Route
+          path='header'
+          element={<RequireAuth isAuthenticated={isAuthenticated}>
+            <Header logout={logout}/>
+            </RequireAuth>}
+        />
+        <Route
+          path='add-item'
+          element={<RequireAuth isAuthenticated={isAuthenticated}>
+            <AddItem/>
+            </RequireAuth>}
+        />
+    </Routes>
     </>
   );
+}
+
+function RequireAuth({ children, isAuthenticated}) {
+  const location = useLocation();
+  console.log('Pre isAuth', isAuthenticated);
+  if (!isAuthenticated) {
+    console.log('Post isAuth', isAuthenticated);
+     return <Navigate to="/login" state={{ from: location }} replace />;
+  }
+return children;
 }
