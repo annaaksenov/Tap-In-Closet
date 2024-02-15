@@ -63,18 +63,15 @@ useEffect(() => {
         </div>
         <div className="column-half d-flex">
             <Items category={layer}/>
-            {/* <img src={"/client/public/images/placeholder-image-square.jpg"} alt="idk"/> */}
         </div>
       </div>
-
       <div className="row category d-block">
         <div className="column-half d-flex align-center">
           <h3>Tops</h3>
           <TiArrowSortedDown className="cursor"/>
         </div>
         <div className="column-half d-flex">
-          <ul className="ulist">
-          </ul>
+          <Items category={top}/>
         </div>
       </div>
       <div className="row category d-block">
@@ -83,8 +80,7 @@ useEffect(() => {
           <TiArrowSortedDown className="cursor"/>
         </div>
         <div className="column-half d-flex">
-          <ul className="ulist">
-          </ul>
+          <Items category={bottom}/>
         </div>
       </div>
       <div className="row category d-block">
@@ -93,8 +89,7 @@ useEffect(() => {
           <TiArrowSortedDown className="cursor"/>
         </div>
         <div className="column-half d-flex">
-          <ul className="ulist">
-          </ul>
+          <Items category={dress}/>
         </div>
       </div>
       <div className="row category d-block">
@@ -103,8 +98,7 @@ useEffect(() => {
           <TiArrowSortedDown className="cursor"/>
         </div>
         <div className="column-half d-flex">
-          <ul className="ulist">
-          </ul>
+          <Items category={shoes}/>
         </div>
       </div>
       <div className="row category d-block">
@@ -113,8 +107,7 @@ useEffect(() => {
           <TiArrowSortedDown className="cursor"/>
         </div>
         <div className="column-half d-flex">
-          <ul className="ulist">
-          </ul>
+          <Items category={accessory}/>
         </div>
       </div>
     </div>
