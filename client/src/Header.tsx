@@ -27,9 +27,9 @@ const navigate = useNavigate();
           </div>
         </div>
       </div>
-      {/* <Closet/> */}
+      <Closet/>
       {/* {<AddItem/>} */}
-      <DressMe />
+      {/* <DressMe /> */}
       <Outlet />
     </>
   )

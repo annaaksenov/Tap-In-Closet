@@ -13,13 +13,12 @@ type Item = {
   category: string;
 };
 export function Closet() {
-//const [closetItems, setClosetItems] = useState<Item>();
 const [layer, setLayer] = useState<Item[]>([]);
 const [top, setTop] = useState<Item[]>([]);
 const [bottom, setBottom] = useState<Item[]>([]);
-const [dress, setDress] = useState<Item>();
-const [shoes, setShoes] = useState<Item>();
-const [accessory, setAccessory] = useState<Item>();
+const [dress, setDress] = useState<Item[]>([]);
+const [shoes, setShoes] = useState<Item[]>([]);
+const [accessory, setAccessory] = useState<Item[]>([]);
 useEffect(() => {
     const session = sessionStorage.getItem('token');
     const req = {
@@ -31,15 +30,19 @@ useEffect(() => {
       return res.json();
     })
     .then((data) => {
-      console.log('data:', data);
       for (let i = 0; i < data.length; i++) {
         if (data[i].category === 'Layer') {
-          console.log('data = layer:', data[i]);
           setLayer([...layer, data[i]]);
         } else if (data[i].category === 'Top') {
           setTop([...top, data[i]]);
         } else if (data[i].category === 'Bottom') {
           setBottom([...bottom, data[i]]);
+        } else if (data[i].category === 'Dress') {
+          setDress([...dress, data[i]]);
+        } else if (data[i].category === 'Shoes') {
+          setShoes([...shoes, data[i]]);
+        } else if (data[i].category === 'Accessory') {
+          setAccessory([...accessory, data[i]]);
         }
       }
     })
