@@ -1,11 +1,10 @@
 import { FiEdit } from "react-icons/fi";
 import { CgAddR  } from "react-icons/cg";
 import { TiArrowSortedDown } from "react-icons/ti";
-import { Link, Outlet } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { useEffect, useState } from "react";
 import { Items } from './Items';
-import { readCloset } from "./data";
-import { TiArrowSortedUp } from "react-icons/ti";
+// import { TiArrowSortedUp } from "react-icons/ti";
 
 type Item = {
   itemId: number;
@@ -17,9 +16,9 @@ export function Closet() {
 const [layer, setLayer] = useState<Item[]>([]);
 const [top, setTop] = useState<Item[]>([]);
 const [bottom, setBottom] = useState<Item[]>([]);
-const [dress, setDress] = useState<Item>();
-const [shoes, setShoes] = useState<Item>();
-const [accessory, setAccessory] = useState<Item>();
+const [dress, setDress] = useState<Item[]>([]);
+const [shoes, setShoes] = useState<Item[]>([]);
+const [accessory, setAccessory] = useState<Item[]>([]);
 useEffect(() => {
     const session = sessionStorage.getItem('token');
     const req = {
@@ -40,9 +39,14 @@ useEffect(() => {
           setTop([...top, data[i]]);
         } else if (data[i].category === 'Bottom') {
           setBottom([...bottom, data[i]]);
+        }  else if (data[i].category === 'Dress') {
+          setDress([...dress, data[i]]);
+        } else if (data[i].category === 'Shoes') {
+            setShoes([...shoes, data[i]]);
+        } else if (data[i].category === 'Accessory') {
+          setAccessory([...accessory, data[i]]);
         }
-      }
-    })
+      }})
     .catch((err) => {
       console.log(err);
   })
