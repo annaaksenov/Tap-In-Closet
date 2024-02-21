@@ -4,7 +4,6 @@ import { TiArrowSortedDown } from "react-icons/ti";
 import { Link, Outlet } from 'react-router-dom';
 import { useEffect, useState } from "react";
 import { Items } from './Items';
-import { readCloset } from "./data";
 import { TiArrowSortedUp } from "react-icons/ti";
 
 type Item = {
@@ -19,7 +18,7 @@ const [bottom, setBottom] = useState<Item[]>([]);
 const [dress, setDress] = useState<Item[]>([]);
 const [shoes, setShoes] = useState<Item[]>([]);
 const [accessory, setAccessory] = useState<Item[]>([]);
-useEffect(() => {
+/*{useEffect(() => {
     const session = sessionStorage.getItem('token');
     const req = {
       method: 'GET',
@@ -30,6 +29,7 @@ useEffect(() => {
       return res.json();
     })
     .then((data) => {
+      console.log('data', data);
       for (let i = 0; i < data.length; i++) {
         if (data[i].category === 'Layer') {
           setLayer([...layer, data[i]]);
@@ -49,7 +49,55 @@ useEffect(() => {
     .catch((err) => {
       console.log(err);
   })
-}, []);
+}, []);}*/
+ useEffect(() => {
+    const session = sessionStorage.getItem('token');
+    const req = {
+      method: 'GET',
+      headers: { 'authorization': `Bearer ${session}` },
+    };
+
+    fetch('/api/closet', req)
+      .then((res) => res.json())
+      .then((data) => {
+        console.log('data', data)
+        const categorizeItems = (category: string, items: Item[]) => {
+          const categorizedItems = data.filter((item: Item) => item.category === category);
+          switch (category) {
+            case 'Layer':
+              setLayer(categorizedItems);
+              break;
+            case 'Top':
+              setTop(categorizedItems);
+              break;
+            case 'Bottom':
+              setBottom(categorizedItems);
+              break;
+            case 'Dress':
+              setDress(categorizedItems);
+              break;
+            case 'Shoes':
+              setShoes(categorizedItems);
+              break;
+            case 'Accessory':
+              setAccessory(categorizedItems);
+              break;
+            default:
+              break;
+          }
+        };
+
+        categorizeItems('Layer', layer);
+        categorizeItems('Top', top);
+        categorizeItems('Bottom', bottom);
+        categorizeItems('Dress', dress);
+        categorizeItems('Shoes', shoes);
+        categorizeItems('Accessory', accessory);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
   return (
     <>
     <div className="closet-container">

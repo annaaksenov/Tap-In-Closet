@@ -1,12 +1,8 @@
-import { Header } from "./Header"
-import { Closet } from "./Closet"
 
 export function TapInCloset() {
   return (
     <>
     <div className="tap-container">
-      <Header/>
-      <Closet/>
     </div>
     </>
   )

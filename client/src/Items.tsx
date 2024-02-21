@@ -7,11 +7,16 @@ export function Items({category}: {category?: Item []}) {
   if (!category) {
     return null;
   }
-    let listItems = category.map((item: Item) => (
+    const listItems = category.map((item: Item) => (
       <li key={item.itemId}>
         <img src={item.image} alt={item.category}/>
       </li>
       ));
+  //   const listItems = category.map((item: Item) => (
+  //   <li key={item.itemId}>
+  //     <img src={URL.createObjectURL(new Blob([item.image], { type: 'image/jpeg' }))} alt={item.category} />
+  //   </li>
+  // ))
 
   return <ul>{listItems}</ul>
 }

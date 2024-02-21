@@ -11,6 +11,7 @@ import {
   errorMiddleware,
   uploadsMiddleware
 } from './lib/index.js';
+import multer from 'multer';
 
 type User = {
   userId: number;
@@ -42,10 +43,15 @@ const hashKey = process.env.TOKEN_SECRET;
 if (!hashKey) throw new Error('TOKEN_SECRET not found in .env');
 
 const app = express();
+app.use(express.static('public'));
+
 
 // Create paths for static directories
 const reactStaticDir = new URL('../client/dist', import.meta.url).pathname;
 const uploadsStaticDir = new URL('public', import.meta.url).pathname;
+//I added this below
+const serverPublicStaticDir = new URL('../server/public', import.meta.url).pathname;
+app.use(express.static(serverPublicStaticDir));
 
 app.use(express.static(reactStaticDir));
 // Static directory for file uploads server/public/
@@ -125,7 +131,7 @@ app.post('/api/upload/closet', authMiddleware, uploadsMiddleware.single('image')
     if (!req.user) {
       throw new ClientError(401, 'not authenticated');
     }
-    const image = `/images/${req.file?.filename}`;
+    const image = `/${req.file?.filename}`;
     const { category } = req.body as Partial<Item>;
     if (!image || !category) {
       throw new ClientError(401, 'requires an image and a category to be selected');

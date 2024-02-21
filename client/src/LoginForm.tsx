@@ -24,13 +24,13 @@ export function LoginForm({login}) {
       const { user, token } = await res.json();
       sessionStorage.setItem('token', token);
       //return {user, token};
+      navigate('/header');
        console.log('Signed In', user, '; received token:', token);
     } catch (err) {
       alert(`Error signing in: ${err}`);
     } finally {
       setIsLoading(false);
       login();
-      navigate('/header');
     }
   }
   return (

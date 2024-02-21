@@ -1,12 +1,13 @@
 //import { useEffect, useState } from 'react';
 import './App.css';
-import { Routes, Route, Navigate, useLocation } from 'react-router-dom';
+import { Routes, Route, Navigate, useLocation, Outlet } from 'react-router-dom';
 import { RegistrationForm } from './RegistrationForm';
 import { LoginForm } from './LoginForm';
 import { useEffect, useState } from 'react';
 import { Header } from './Header';
 import { AddItem } from './AddItem';
-//import { Closet } from './Closet';
+import { Closet } from './Closet';
+import { DressMe } from './DressMe';
 
 export default function App() {
 /* The current page that should display
@@ -46,6 +47,16 @@ return (
             <Header logout={logout}/>
             </RequireAuth>}
         />
+           {/* <Route
+          path="header"
+          element={<RequireAuth isAuthenticated={isAuthenticated}>
+              <Header logout={logout} />
+              <Outlet />
+            </RequireAuth>}
+            >
+          <Route path="closet" element={<Closet />} />
+          <Route path="dress-me" element={<DressMe />} />
+        </Route> */}
         <Route
           path='add-item'
           element={<RequireAuth isAuthenticated={isAuthenticated}>

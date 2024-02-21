@@ -1,9 +1,24 @@
-import { FormEvent} from "react";
+import { FormEvent, useState, ChangeEvent} from "react";
 import { FaArrowLeft } from "react-icons/fa6";
 import { Link, Outlet, useNavigate } from 'react-router-dom';
 
 export function AddItem() {
+  const [imgURL, setImgURL] = useState<string | null>(null);
   const navigate = useNavigate();
+
+    const handleImageChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+
+    if (file) {
+      const imageUrl = URL.createObjectURL(file);
+      console.log('image url from upload: ', imageUrl);
+      setImgURL(imageUrl);
+    } else {
+      setImgURL(null);
+    }
+  };
+  console.log('imgURL', imgURL);
+
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     try {
@@ -25,6 +40,8 @@ export function AddItem() {
       if (!image || !category) {
         throw new Error('Image or category not selected');
       }
+
+      setImgURL(null);
       console.log('image', image, 'category', category);
   } catch (err) {
     alert(`Error adding item ${err}`)
@@ -49,13 +66,13 @@ export function AddItem() {
             <div className="column-full">
             <p>Take a photo of your item.</p>
             <p>We recommend capturing the item only in a flat-lay position, taken from directly above the item.</p>
-            <img className="box d-block"/>
+            <img src={imgURL === null ? "/images/placeholder-image-square.jpg" : imgURL} className="box d-block" alt="Uploaded image"/>
             </div>
           </div>
           <form onSubmit={handleSubmit}>
           <div className="row">
             <div className="column-full">
-              <input type="file" name="image" accept=".png, .jpg, .jpeg, .gif"/>
+              <input type="file" name="image" accept=".png, .jpg, .jpeg, .JPEG, .gif" onChange={handleImageChange}/>
             </div>
           </div>
           <div className="row">

@@ -30,7 +30,7 @@ const navigate = useNavigate();
       <Closet/>
       {/* {<AddItem/>} */}
       {/* <DressMe /> */}
-      <Outlet />
+      {/* <Outlet /> */}
     </>
   )
 }
