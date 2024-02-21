@@ -1,10 +1,10 @@
 import { FiEdit } from "react-icons/fi";
 import { CgAddR  } from "react-icons/cg";
 import { TiArrowSortedDown } from "react-icons/ti";
-import { Link, Outlet } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { useEffect, useState } from "react";
 import { Items } from './Items';
-import { TiArrowSortedUp } from "react-icons/ti";
+// import { TiArrowSortedUp } from "react-icons/ti";
 
 type Item = {
   itemId: number;
