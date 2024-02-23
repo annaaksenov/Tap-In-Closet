@@ -1,6 +1,6 @@
 import {FaRegUserCircle} from 'react-icons/fa';
 import { Outlet, useNavigate } from 'react-router-dom';
-import { Closet } from './Closet';
+//import { Closet } from './Closet';
 import { DressMe } from './DressMe';
 //import { AddItem } from './AddItem';
 
@@ -27,10 +27,10 @@ const navigate = useNavigate();
           </div>
         </div>
       </div>
-      <Closet/>
+    {/* <Closet/> */}
       {/* {<AddItem/>} */}
-      {/* <DressMe /> */}
-      {/* <Outlet /> */}
+    <DressMe />
+      <Outlet />
     </>
   )
 }

@@ -9,7 +9,7 @@ export function Items({category}: {category?: Item []}) {
   }
     const listItems = category.map((item: Item) => (
       <li key={item.itemId}>
-        <img src={item.image} alt={item.category}/>
+        <img src={item.image} alt={item.category} className="item-img"/>
       </li>
       ));
   //   const listItems = category.map((item: Item) => (
@@ -18,5 +18,5 @@ export function Items({category}: {category?: Item []}) {
   //   </li>
   // ))
 
-  return <ul>{listItems}</ul>
+  return <ul className="cat-row">{listItems}</ul>
 }

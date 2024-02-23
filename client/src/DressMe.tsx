@@ -1,5 +1,3 @@
-import { FaChevronLeft } from "react-icons/fa6";
-import { FaChevronRight } from "react-icons/fa6";
 import { useEffect, useState } from "react";
 import { Carousel } from "./Carousel";
 
@@ -15,7 +13,7 @@ const [bottom, setBottom] = useState<Item[]>([]);
 const [dress, setDress] = useState<Item[]>([]);
 const [shoes, setShoes] = useState<Item[]>([]);
 const [accessory, setAccessory] = useState<Item[]>([]);
-const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
+//const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
 
 useEffect(() => {
     const session = sessionStorage.getItem('token');
@@ -28,42 +26,75 @@ useEffect(() => {
       return res.json();
      })
     .then((data) => {
-      console.log('data:', data);
-      for (let i = 0; i < data.length; i++) {
-        if (data[i].category === 'Layer') {
-          setLayer([...layer, data[i]]);
-        } else if (data[i].category === 'Top') {
-          setTop([...top, data[i]]);
-        } else if (data[i].category === 'Bottom') {
-          setBottom([...bottom, data[i]]);
-        } else if (data[i].category === 'Dress') {
-          setDress([...dress, data[i]]);
-        } else if (data[i].category === 'Shoes') {
-          setShoes([...shoes, data[i]]);
-        } else if (data[i].category === 'Accessory') {
-          setAccessory([...accessory, data[i]]);
-        }
-      }
-    })
-    .catch((err) => {
-      console.log(err);
-  })
-}, []);
+        const categorizeItems = (category: string, items: Item[]) => {
+          const categorizedItems = data.filter((item: Item) => item.category === category);
+          switch (category) {
+            case 'Layer':
+              setLayer(categorizedItems);
+              break;
+            case 'Top':
+              setTop(categorizedItems);
+              break;
+            case 'Bottom':
+              setBottom(categorizedItems);
+              break;
+            case 'Dress':
+              setDress(categorizedItems);
+              break;
+            case 'Shoes':
+              setShoes(categorizedItems);
+              break;
+            case 'Accessory':
+              setAccessory(categorizedItems);
+              break;
+            default:
+              break;
+          }
+        };
 
-function handleSelect(e) {
-    const { value } = e.target;
-    // Toggle selected category
-    setSelectedCategories((prev) =>
-      prev.includes(value)
-        ? prev.filter((category) => category !== value)
-        : [...prev, value]
-    );
-  }
+        categorizeItems('Layer', layer);
+        categorizeItems('Top', top);
+        categorizeItems('Bottom', bottom);
+        categorizeItems('Dress', dress);
+        categorizeItems('Shoes', shoes);
+        categorizeItems('Accessory', accessory);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
+
+  // function handleSelect(e: ChangeEvent<HTMLInputElement>) {}
 
   return (
     <>
-<div className="dressMe-container">
-        <form onSelect={handleSelect}>
+      <div className="dressMe-container">
+          <div className="carousel-content">
+            <div className="row">
+              <div className="column-full d-flex align-center justify-center padding">
+                <Carousel category={layer}/>
+                <Carousel category={top}/>
+              </div>
+            </div>
+            <div className="row">
+              <div className="column-full d-flex align-center justify-center padding">
+                <Carousel category={dress}/>
+                <Carousel category={bottom}/>
+              </div>
+            </div>
+            <div className="row">
+              <div className="column-full d-flex align-center justify-center padding">
+                <Carousel category={shoes}/>
+                <Carousel category={accessory}/>
+              </div>
+            </div>
+          </div>
+      </div>
+    </>
+  )
+}
+
+/* <form>
           <div className="row">
             <div className="column-full d-flex justify-center">
               <input
@@ -110,8 +141,17 @@ function handleSelect(e) {
               <label htmlFor="accessory">Accessory</label>
             </div>
           </div>
-        </form>
+        </form> */
 
+        /* function handleSelect(e) {
+    const { value } = e.target;
+    // Toggle selected category
+    setSelectedCategories((prev) =>
+      prev.includes(value)
+        ? prev.filter((category) => category !== value)
+        : [...prev, value]
+    );
+  }
         <div>
           {selectedCategories.includes('Layer') &&
             layer.map((item) => (
@@ -137,11 +177,8 @@ function handleSelect(e) {
             accessory.map((item) => (
               <img key={item.itemId} src={item.image} alt={item.category} />
             ))}
-        </div>
-      </div>
-    </>
-  )
-}
+        </div> */
+
       /* <div className="dressMe-container">
           <form onSelect={handleSelect}>
              <div className="row">

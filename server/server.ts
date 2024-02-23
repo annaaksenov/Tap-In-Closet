@@ -131,7 +131,7 @@ app.post('/api/upload/closet', authMiddleware, uploadsMiddleware.single('image')
     if (!req.user) {
       throw new ClientError(401, 'not authenticated');
     }
-    const image = `/${req.file?.filename}`;
+    const image = `/images/${req.file?.filename}`;
     const { category } = req.body as Partial<Item>;
     if (!image || !category) {
       throw new ClientError(401, 'requires an image and a category to be selected');

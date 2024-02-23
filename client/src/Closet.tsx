@@ -1,6 +1,6 @@
 import { FiEdit } from "react-icons/fi";
 import { CgAddR  } from "react-icons/cg";
-import { TiArrowSortedDown } from "react-icons/ti";
+//import { TiArrowSortedDown } from "react-icons/ti";
 import { Link } from 'react-router-dom';
 import { useEffect, useState } from "react";
 import { Items } from './Items';
@@ -110,54 +110,48 @@ const [accessory, setAccessory] = useState<Item[]>([]);
       <div className="row category d-block">
         <div className="column-half d-flex align-center">
           <h3>Layers</h3>
-          <TiArrowSortedDown className="cursor"/>
         </div>
-        <div className="column-half d-flex">
+        <div className="cat-row">
             <Items category={layer}/>
         </div>
       </div>
       <div className="row category d-block">
         <div className="column-half d-flex align-center">
           <h3>Tops</h3>
-          <TiArrowSortedDown className="cursor"/>
         </div>
-        <div className="column-half d-flex">
+        <div className="cat-row">
           <Items category={top}/>
         </div>
       </div>
       <div className="row category d-block">
         <div className="column-half d-flex align-center">
           <h3>Bottoms</h3>
-          <TiArrowSortedDown className="cursor"/>
         </div>
-        <div className="column-half d-flex">
+        <div className="cat-row">
           <Items category={bottom}/>
         </div>
       </div>
       <div className="row category d-block">
         <div className="column-half d-flex align-center">
           <h3>Dresses</h3>
-          <TiArrowSortedDown className="cursor"/>
         </div>
-        <div className="column-half d-flex">
+        <div className="cat-row">
           <Items category={dress}/>
         </div>
       </div>
       <div className="row category d-block">
         <div className="column-half d-flex align-center">
           <h3>Shoes</h3>
-          <TiArrowSortedDown className="cursor"/>
         </div>
-        <div className="column-half d-flex">
+        <div className="cat-row">
           <Items category={shoes}/>
         </div>
       </div>
       <div className="row category d-block">
         <div className="column-half d-flex align-center">
           <h3>Accessories</h3>
-          <TiArrowSortedDown className="cursor"/>
         </div>
-        <div className="column-half d-flex">
+        <div className="cat-row">
           <Items category={accessory}/>
         </div>
       </div>
