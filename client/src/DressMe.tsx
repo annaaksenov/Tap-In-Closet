@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, ChangeEvent, FormEvent } from "react";
 import { Carousel } from "./Carousel";
 
 type Item = {
@@ -13,7 +13,7 @@ const [bottom, setBottom] = useState<Item[]>([]);
 const [dress, setDress] = useState<Item[]>([]);
 const [shoes, setShoes] = useState<Item[]>([]);
 const [accessory, setAccessory] = useState<Item[]>([]);
-//const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
+const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
 
 useEffect(() => {
     const session = sessionStorage.getItem('token');
@@ -64,37 +64,23 @@ useEffect(() => {
       });
   }, []);
 
-  // function handleSelect(e: ChangeEvent<HTMLInputElement>) {}
+function handleSelect(e: ChangeEvent<HTMLInputElement>) {
+    const { value } = e.target;
+    setSelectedCategories((prev) =>
+      prev.includes(value)
+        ? prev.filter((category) => category !== value)
+        : [...prev, value]
+    );
+}
+
+function saveOutfit(e: FormEvent<HTMLFormElement>) {
+  e.preventDefault();
+}
 
   return (
     <>
       <div className="dressMe-container">
-          <div className="carousel-content">
-            <div className="row">
-              <div className="column-full d-flex align-center justify-center padding">
-                <Carousel category={layer}/>
-                <Carousel category={top}/>
-              </div>
-            </div>
-            <div className="row">
-              <div className="column-full d-flex align-center justify-center padding">
-                <Carousel category={dress}/>
-                <Carousel category={bottom}/>
-              </div>
-            </div>
-            <div className="row">
-              <div className="column-full d-flex align-center justify-center padding">
-                <Carousel category={shoes}/>
-                <Carousel category={accessory}/>
-              </div>
-            </div>
-          </div>
-      </div>
-    </>
-  )
-}
-
-/* <form>
+        <form>
           <div className="row">
             <div className="column-full d-flex justify-center">
               <input
@@ -141,7 +127,36 @@ useEffect(() => {
               <label htmlFor="accessory">Accessory</label>
             </div>
           </div>
-        </form> */
+          <div className="row">
+            <div className="column-full d-flex justify-center padding">
+              {(selectedCategories.length > 1) && (<button onClick={saveOutfit} className="green-button">Save</button>)}
+            </div>
+          </div>
+        </form>
+          <div className="carousel-content">
+            <div className="row">
+              <div className="column-full d-flex align-center justify-center padding">
+                {selectedCategories.includes('Layer') && (<Carousel category={layer}/>)}
+                {selectedCategories.includes('Top') && (<Carousel category={top}/>)}
+              </div>
+            </div>
+            <div className="row">
+              <div className="column-full d-flex align-center justify-center padding">
+                {selectedCategories.includes('Dress') && (<Carousel category={dress}/>)}
+                {selectedCategories.includes('Bottom') && (<Carousel category={bottom}/>)}
+              </div>
+            </div>
+            <div className="row">
+              <div className="column-full d-flex align-center justify-center padding">
+                {selectedCategories.includes('Shoes') && (<Carousel category={shoes}/>)}
+                {selectedCategories.includes('Accessory') && (<Carousel category={accessory}/>)}
+              </div>
+            </div>
+          </div>
+      </div>
+    </>
+  )
+}
 
         /* function handleSelect(e) {
     const { value } = e.target;
