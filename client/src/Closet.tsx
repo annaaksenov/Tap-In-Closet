@@ -1,10 +1,10 @@
-import { FiEdit } from "react-icons/fi";
+// import { FiEdit } from "react-icons/fi";
+import { FaTrashAlt } from "react-icons/fa";
 import { CgAddR  } from "react-icons/cg";
-//import { TiArrowSortedDown } from "react-icons/ti";
 import { Link } from 'react-router-dom';
 import { useEffect, useState } from "react";
 import { Items } from './Items';
-// import { TiArrowSortedUp } from "react-icons/ti";
+import { Outlet } from 'react-router-dom';
 
 type Item = {
   itemId: number;
@@ -86,7 +86,6 @@ const [accessory, setAccessory] = useState<Item[]>([]);
               break;
           }
         };
-
         categorizeItems('Layer', layer);
         categorizeItems('Top', top);
         categorizeItems('Bottom', bottom);
@@ -103,7 +102,7 @@ const [accessory, setAccessory] = useState<Item[]>([]);
     <div className="closet-container">
       <div className="row d-flex">
         <div className="column-full d-flex justify-end">
-          <FiEdit size="22px" className="padding-5"/>
+          <FaTrashAlt size="22px" className="padding-5"/>
           <Link to="/add-item"><CgAddR size="22px" className="padding-5 link"/></Link>
         </div>
       </div>
@@ -156,6 +155,7 @@ const [accessory, setAccessory] = useState<Item[]>([]);
         </div>
       </div>
     </div>
+    <Outlet />
     </>
   )
 }

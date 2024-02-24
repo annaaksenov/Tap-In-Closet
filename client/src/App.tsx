@@ -41,27 +41,26 @@ return (
     <Routes>
         <Route path='/' element={<RegistrationForm/>}/>
         <Route path='login' element={<LoginForm login={login}/>}/>
+
         <Route
-          path='header'
-          element={<RequireAuth isAuthenticated={isAuthenticated}>
-            <Header logout={logout}/>
-            </RequireAuth>}
-        />
-           {/* <Route
           path="header"
-          element={<RequireAuth isAuthenticated={isAuthenticated}>
+          element={
+            <RequireAuth isAuthenticated={isAuthenticated}>
               <Header logout={logout} />
               <Outlet />
-            </RequireAuth>}
-            >
-          <Route path="closet" element={<Closet />} />
+            </RequireAuth>
+          }>
+          <Route index element={<Closet />} />
           <Route path="dress-me" element={<DressMe />} />
-        </Route> */}
+          {/* <Route path="outfits" element={<Outfits />} /> */}
+        </Route>
         <Route
-          path='add-item'
-          element={<RequireAuth isAuthenticated={isAuthenticated}>
-            <AddItem/>
-            </RequireAuth>}
+          path="add-item"
+          element={
+            <RequireAuth isAuthenticated={isAuthenticated}>
+              <AddItem />
+            </RequireAuth>
+          }
         />
     </Routes>
     </>

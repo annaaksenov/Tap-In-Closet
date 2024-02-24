@@ -1,5 +1,6 @@
-import { useEffect, useState, ChangeEvent, FormEvent } from "react";
+import { useEffect, useState, ChangeEvent } from "react";
 import { Carousel } from "./Carousel";
+import { Outlet } from 'react-router-dom';
 
 type Item = {
   itemId: number;
@@ -73,9 +74,9 @@ function handleSelect(e: ChangeEvent<HTMLInputElement>) {
     );
 }
 
-function saveOutfit(e: FormEvent<HTMLFormElement>) {
-  e.preventDefault();
-}
+// function saveOutfit(event: FormEvent<HTMLFormElement>) {
+//   e.preventDefault();
+// }onClick={saveOutfit}
 
   return (
     <>
@@ -129,7 +130,7 @@ function saveOutfit(e: FormEvent<HTMLFormElement>) {
           </div>
           <div className="row">
             <div className="column-full d-flex justify-center padding">
-              {(selectedCategories.length > 1) && (<button onClick={saveOutfit} className="green-button">Save</button>)}
+              {(selectedCategories.length > 1) && (<button className="green-button">Save</button>)}
             </div>
           </div>
         </form>
@@ -154,108 +155,7 @@ function saveOutfit(e: FormEvent<HTMLFormElement>) {
             </div>
           </div>
       </div>
+    <Outlet/>
     </>
   )
 }
-
-        /* function handleSelect(e) {
-    const { value } = e.target;
-    // Toggle selected category
-    setSelectedCategories((prev) =>
-      prev.includes(value)
-        ? prev.filter((category) => category !== value)
-        : [...prev, value]
-    );
-  }
-        <div>
-          {selectedCategories.includes('Layer') &&
-            layer.map((item) => (
-              <img key={item.itemId} src={item.image} alt={item.category} />
-            ))}
-          {selectedCategories.includes('Top') &&
-            top.map((item) => (
-              <img key={item.itemId} src={item.image} alt={item.category} />
-            ))}
-          {selectedCategories.includes('Bottom') &&
-            bottom.map((item) => (
-              <img key={item.itemId} src={item.image} alt={item.category} />
-            ))}
-          {selectedCategories.includes('Dress') &&
-            dress.map((item) => (
-              <img key={item.itemId} src={item.image} alt={item.category} />
-            ))}
-          {selectedCategories.includes('Shoes') &&
-            shoes.map((item) => (
-              <img key={item.itemId} src={item.image} alt={item.category} />
-            ))}
-          {selectedCategories.includes('Accessory') &&
-            accessory.map((item) => (
-              <img key={item.itemId} src={item.image} alt={item.category} />
-            ))}
-        </div> */
-
-      /* <div className="dressMe-container">
-          <form onSelect={handleSelect}>
-             <div className="row">
-              <div className="column-full d-flex justify-center">
-                <input type="checkbox" name="category" value="Layer"/>
-                <label htmlFor="layer">Layer</label>
-                <input type="checkbox" name="category" value="Top"/>
-                <label htmlFor="top">Top</label>
-                <input type="checkbox" name="category" value="Bottom"/>
-                <label htmlFor="bottom">Bottom</label>
-                <input type="checkbox" name="category" value="Dress"/>
-                <label htmlFor="dress">Dress</label>
-                <input type="checkbox" name="category" value="Shoes"/>
-                <label htmlFor="shoes">Shoes</label>
-                <input type="checkbox" name="category" value="Accessory"/>
-                <label htmlFor="accessory">Accessory</label>
-              </div>
-            </div>
-          </form>
-        </div> */
-
-        /* { <div className="row d-flex">
-          <Carousel />
-          <div className="column-full">
-            <button className="green-button d-flex center padding">Save</button>
-          </div>
-        </div>
-        <div className="row card ">
-          <div className="column-half align-center d-flex padding">
-            <FaChevronLeft cursor="pointer"/>
-            <img src="images/placeholder-image-square.jpg" className="cat-img"/>
-            <FaChevronRight cursor="pointer"/>
-          </div>
-          <div className="column-half align-center d-flex  padding">
-            <FaChevronLeft cursor="pointer"/>
-            <img src="images/placeholder-image-square.jpg" className="cat-img"/>
-            <FaChevronRight cursor="pointer"/>
-          </div>
-        </div>
-
-        <div className="row card">
-          <div className="column-half align-center d-flex  padding">
-            <FaChevronLeft cursor="pointer"/>
-            <img src="images/placeholder-image-square.jpg" className="cat-img"/>
-            <FaChevronRight cursor="pointer"/>
-          </div>
-          <div className="column-half align-center d-flex  padding">
-            <FaChevronLeft cursor="pointer"/>
-            <img src="images/placeholder-image-square.jpg" className="cat-img"/>
-            <FaChevronRight cursor="pointer"/>
-          </div>
-        </div>
-
-        <div className="row card">
-          <div className="column-half align-center d-flex  padding">
-            <FaChevronLeft cursor="pointer"/>
-            <img src="images/placeholder-image-square.jpg" className="cat-img"/>
-            <FaChevronRight cursor="pointer"/>
-          </div>
-          <div className="column-half align-center d-flex  padding">
-            <FaChevronLeft cursor="pointer"/>
-            <img src="images/placeholder-image-square.jpg" className="cat-img"/>
-            <FaChevronRight cursor="pointer"/>
-          </div}>
-          </div>*/
