@@ -146,6 +146,18 @@ app.post('/api/upload/closet', authMiddleware, uploadsMiddleware.single('image')
   }
 });
 
+app.post('api/build/outfits', authMiddleware, async (req, res, next) => {
+  try {
+    if (!req.user) {
+      throw new ClientError(401, 'not authenticated');
+    }
+
+  } catch (err) {
+    console.error('Error processing request:', err);
+    next(err);
+  }
+});
+
 app.get('/api/outfits', authMiddleware, async (req, res, next) => {
   try {
     const sql = 'select * from "outfits" where "userId" = $1 order by "outfitId" desc;';
