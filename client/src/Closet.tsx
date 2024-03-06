@@ -60,7 +60,8 @@ const [accessory, setAccessory] = useState<Item[]>([]);
       .then((res) => res.json())
       .then((data) => {
         console.log('data', data)
-        const categorizeItems = (category: string, items: Item[]) => {
+        // const categorizeItems = (category: string, items: Item[]) => {
+          const categorizeItems = (category: string, []) => {
           const categorizedItems = data.filter((item: Item) => item.category === category);
           switch (category) {
             case 'Layer':
