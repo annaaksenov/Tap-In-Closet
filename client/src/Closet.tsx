@@ -5,6 +5,7 @@ import { Link, Outlet } from 'react-router-dom';
 import { useEffect, useState } from "react";
 import { Items } from './Items';
 
+
 type Item = {
   itemId: number;
   image: string;
@@ -17,6 +18,7 @@ const [bottom, setBottom] = useState<Item[]>([]);
 const [dress, setDress] = useState<Item[]>([]);
 const [shoes, setShoes] = useState<Item[]>([]);
 const [accessory, setAccessory] = useState<Item[]>([]);
+
 /*{useEffect(() => {
     const session = sessionStorage.getItem('token');
     const req = {
@@ -43,8 +45,7 @@ const [accessory, setAccessory] = useState<Item[]>([]);
         } else if (data[i].category === 'Accessory') {
           setAccessory([...accessory, data[i]]);
         }
-      }
-    })
+      }})
     .catch((err) => {
       console.log(err);
   })
