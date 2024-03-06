@@ -1,7 +1,5 @@
 import {FaRegUserCircle} from 'react-icons/fa';
-import { Outlet, useNavigate } from 'react-router-dom';
-import { Closet } from './Closet';
-//import { AddItem } from './AddItem';
+import { Link, useNavigate } from 'react-router-dom';
 
 export function Header({logout}) {
 const navigate = useNavigate();
@@ -20,15 +18,18 @@ const navigate = useNavigate();
         </div>
         <div className="row tabs">
           <div className="column-full d-flex justify-between">
-            <p className="tab cursor">Dress me</p>
-            <p className="tab cursor selected">Closet</p>
-            <p className="tab cursor">Outfits</p>
+          <Link to="/header/dress-me" className="cursor">
+              Dress me
+            </Link>
+            <Link to="" className="cursor">
+              Closet
+            </Link>
+            <Link to="/header/outfits" className="cursor">
+              Outfits
+            </Link>
           </div>
         </div>
       </div>
-      <Closet/>
-      {/* {<AddItem/>} */}
-      <Outlet />
     </>
   )
 }

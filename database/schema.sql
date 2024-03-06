@@ -25,10 +25,14 @@ CREATE TABLE "closet" (
   "createdAt" timestamp(6) not null default now()
 );
 
+CREATE TABLE "outfitItems" (
+  "itemId" integer,
+  "outfitId" integer
+);
+
 CREATE TABLE "outfits" (
   "outfitId" serial PRIMARY KEY,
   "userId" integer,
-  "name" varchar(255),
   "createdAt" timestamp(6) not null default now(),
   "updatedAt" timestamp(6) not null default now()
 );
@@ -45,3 +49,14 @@ ALTER TABLE "closet" ADD FOREIGN KEY ("userId") REFERENCES "users" ("userId");
 ALTER TABLE "outfits" ADD FOREIGN KEY ("userId") REFERENCES "users" ("userId");
 
 ALTER TABLE "favorites" ADD FOREIGN KEY ("userId") REFERENCES "users" ("userId");
+-- I added itemId, image, and category.
+-- CREATE TABLE "outfits" (
+--   "outfitId" serial PRIMARY KEY,
+--   "userId" integer,
+--   "itemId" integer,
+--   "image" text,
+--   "category" varchar(100),
+--   "name" varchar(255),
+--   "createdAt" timestamp(6) not null default now(),
+--   "updatedAt" timestamp(6) not null default now()
+-- );

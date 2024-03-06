@@ -23,10 +23,33 @@ type Auth = {
 };
 
 type Item = {
-  imageId: number;
+  itemId: number;
   image: string;
   category: string;
 };
+
+type OutfitItems = {
+  itemId: number;
+  outfitId: number;
+}
+
+type Outfit = {
+  outfitId: number;
+  userId: number;
+}
+
+// type Outfit = {
+//   outfitId: number;
+//   userId: number;
+//   itemId: number;
+//   image: string;
+//   category: string;
+// }
+
+// type Outfit = Item & {
+//  outfitId: number;
+// userId: number;
+//}
 
 const connectionString =
   process.env.DATABASE_URL ||
@@ -42,10 +65,15 @@ const hashKey = process.env.TOKEN_SECRET;
 if (!hashKey) throw new Error('TOKEN_SECRET not found in .env');
 
 const app = express();
+app.use(express.static('public'));
+
 
 // Create paths for static directories
 const reactStaticDir = new URL('../client/dist', import.meta.url).pathname;
 const uploadsStaticDir = new URL('public', import.meta.url).pathname;
+//I added this below
+const serverPublicStaticDir = new URL('../server/public', import.meta.url).pathname;
+app.use(express.static(serverPublicStaticDir));
 
 app.use(express.static(reactStaticDir));
 // Static directory for file uploads server/public/
@@ -118,12 +146,14 @@ app.get('/api/closet', authMiddleware, async (req, res, next) => {
   }
 });
 
-// On image variable, I an assembling the image not destructuring it, like category.
 app.post('/api/upload/closet', authMiddleware, uploadsMiddleware.single('image'), async (req, res, next) => {
   console.log('body and user:', req.file, req.body, req.user);
   try {
     if (!req.user) {
       throw new ClientError(401, 'not authenticated');
+    }
+    if (!req.file) {
+    throw new ClientError(400, 'No file uploaded');
     }
     const image = `/images/${req.file?.filename}`;
     const { category } = req.body as Partial<Item>;
@@ -139,6 +169,157 @@ app.post('/api/upload/closet', authMiddleware, uploadsMiddleware.single('image')
     next(err);
   }
 });
+
+//  app.post('/api/build/outfits', authMiddleware, async (req, res, next) => {
+//   console.log('body and user:', req.body, req.user);
+//   try {
+//     if (!req.user) {
+//       throw new ClientError(401, 'not authenticated');
+//     }
+//     const { image, category } = req.body as Partial<Item>;
+//     if (!image || !category) {
+//       throw new ClientError(401, 'requires two or more items to be selected');
+//     }
+//     const sql = `insert into "outfits"
+//     ("image", "category", "userId")
+//     values ($1, $2, $3) returning *;`;
+//     const params = [image, category, req.user.userId];
+//     const result = await db.query<Item>(sql, params);
+//     res.status(201).json(result.rows);
+//   } catch (err) {
+//     console.error('Error processing request:', err);
+//     next(err);
+//   }
+// });
+
+// app.post('/api/build/outfits', authMiddleware, async (req, res, next) => {
+//   console.log('body and user:', req.body, req.user);
+//  try {
+//     if (!req.user) {
+//       throw new ClientError(401, 'not authenticated');
+//     }
+//     // Ensure that req.body is an array
+//     if (!Array.isArray(req.body) || req.body.length < 2) {
+//       throw new ClientError(400, 'requires two or more items to be selected');
+//     }
+//     // Iterate over the array and insert each item into the database
+//     const insertPromises = req.body.map(async (item) => {
+//       const {itemId, image, category } = item as Partial<Outfit>;
+
+//       if (!itemId || !image || !category) {
+//         throw new ClientError(400, 'Each item must have image and category');
+//       }
+//       const sql = `insert into "outfits" ("itemId", "image", "category", "userId") values ($1, $2, $3, $4) returning *;`;
+//       const params = [itemId, image, category, req.user?.userId];
+//       const result = await db.query<Outfit>(sql, params);
+//       return result.rows[0];
+//     });
+//     const insertedItems = await Promise.all(insertPromises);
+//     res.status(201).json(insertedItems);
+//   } catch (err) {
+//     console.error('Error processing request:', err);
+//     next(err);
+//   }
+// });
+
+// app.post('/api/build/outfits', authMiddleware, async (req, res, next) => {
+//   console.log('body and user:', req.body, req.user);
+//   try {
+//     if (!req.user) {
+//       throw new ClientError(401, 'not authenticated');
+//     }
+
+//     // Ensure that req.body is an array
+//     if (!Array.isArray(req.body) || req.body.length === 0) {
+//       throw new ClientError(400, 'requires an array of items');
+//     }
+
+//     // Assuming each item in the array represents an individual outfit
+//     const outfits = req.body;
+
+//     // Validate each outfit
+//     outfits.forEach((outfit) => {
+//       outfit.forEach((item: Outfit) => {
+//         const { image, category } = item as Partial<Outfit>;
+//         if (!image || !category) {
+//           throw new ClientError(400, 'Each item must have image and category');
+//         }
+//       });
+//     });
+
+//     // Insert each outfit item into the "outfits" table and collect the results
+//     const insertedItems = [];
+//     for (const outfit of outfits) {
+//       const sql = `
+//         INSERT INTO "outfits" ("userId", "image", "category")
+//         VALUES ($1, $2, $3)
+//         RETURNING *;
+//       `;
+//       const params = [
+//         req.user.userId,
+//         outfit.map((item: Outfit) => item.image).join(', '), // Concatenate images (modify as needed)
+//         outfit.map((item: Outfit) => item.category).join(', '), // Concatenate categories (modify as needed)
+//       ];
+//       const result = await db.query<Outfit>(sql, params);
+//       insertedItems.push(...result.rows);
+//     }
+
+//     res.status(201).json(insertedItems);
+//   } catch (err) {
+//     console.error('Error processing request:', err);
+//     next(err);
+//   }
+// });
+
+app.post('/api/build/outfits', authMiddleware, async (req, res, next) => {
+  console.log('body and user:', req.body, req.user);
+  if (!req.user) {
+    throw new ClientError(401, 'not authenticated');
+  }
+  try {
+    const { userId } = req.user;
+    const sql = `insert into "outfits" ("userId") values ($1) returning "outfitId";`;
+    const params = [ userId ];
+    const result = await db.query<Outfit>(sql, params);
+    const outfitId = result.rows[0].outfitId;
+
+    // Iterate through the items in the request body and insert into outfitItems table
+    const outfitArray = [];
+    for (const item of req.body) {
+      const { itemId } = item;
+      const sql2 = 'insert into "outfitItems" ("itemId", "outfitId") values ($1, $2) returning *;';
+      const param2 = [ itemId, outfitId ];
+      await db.query<OutfitItems>(sql2, param2);
+      outfitArray.push(result.rows[0]);
+    }
+    res.status(201).json({ outfitId, outfitItems: outfitArray });
+} catch (err) {
+    console.error('Error processing request:', err);
+    next(err);
+  }
+})
+
+app.get('/api/outfitItems', authMiddleware, async (req, res, next) => {
+  if (!req.user) {
+    throw new ClientError(401, 'not authenticated');
+  }
+  try {
+    const sql = 'select * from "outfitItems" order by "outfitId" desc;';
+    const result = await db.query<OutfitItems>(sql);
+    res.status(201).json(result.rows);
+  } catch (err) {
+    next(err);
+  }
+})
+// app.get('/api/outfitItems', authMiddleware, async (req, res, next) => {
+//   try {
+//     const sql = 'select * from "outfitItems" where "userId" = $1 order by "outfitId" desc;';
+//     const result = await db.query<OutfitItems>(sql, [req.user?.userId]);
+//     res.status(201).json(result.rows);
+//   } catch (err) {
+//     next(err);
+//   }
+// })
 
 app.get('/api/outfits', authMiddleware, async (req, res, next) => {
   try {

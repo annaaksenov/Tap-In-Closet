@@ -1,12 +1,14 @@
 //import { useEffect, useState } from 'react';
 import './App.css';
-import { Routes, Route, Navigate, useLocation } from 'react-router-dom';
+import { Routes, Route, Navigate, useLocation, Outlet } from 'react-router-dom';
 import { RegistrationForm } from './RegistrationForm';
 import { LoginForm } from './LoginForm';
 import { useEffect, useState } from 'react';
 import { Header } from './Header';
 import { AddItem } from './AddItem';
-//import { Closet } from './Closet';
+import { Closet } from './Closet';
+import { DressMe } from './DressMe';
+import { Outfits } from './Outfits';
 
 export default function App() {
 /* The current page that should display
@@ -40,17 +42,26 @@ return (
     <Routes>
         <Route path='/' element={<RegistrationForm/>}/>
         <Route path='login' element={<LoginForm login={login}/>}/>
+
         <Route
-          path='header'
-          element={<RequireAuth isAuthenticated={isAuthenticated}>
-            <Header logout={logout}/>
-            </RequireAuth>}
-        />
+          path="header"
+          element={
+            <RequireAuth isAuthenticated={isAuthenticated}>
+              <Header logout={logout} />
+              <Outlet />
+            </RequireAuth>
+          }>
+          <Route index element={<Closet />} />
+          <Route path="dress-me" element={<DressMe />} />
+          <Route path="outfits" element={<Outfits />} />
+        </Route>
         <Route
-          path='add-item'
-          element={<RequireAuth isAuthenticated={isAuthenticated}>
-            <AddItem/>
-            </RequireAuth>}
+          path="add-item"
+          element={
+            <RequireAuth isAuthenticated={isAuthenticated}>
+              <AddItem />
+            </RequireAuth>
+          }
         />
     </Routes>
     </>
