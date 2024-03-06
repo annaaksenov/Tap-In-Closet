@@ -8,7 +8,6 @@ export function AddItem() {
 
     const handleImageChange = (event: ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
-
     if (file) {
       const imageUrl = URL.createObjectURL(file);
       console.log('image url from upload: ', imageUrl);
@@ -17,8 +16,7 @@ export function AddItem() {
       setImgURL(null);
     }
   };
-  console.log('imgURL', imgURL);
-
+  //console.log('imgURL', imgURL);
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     try {
@@ -40,11 +38,10 @@ export function AddItem() {
       if (!image || !category) {
         throw new Error('Image or category not selected');
       }
-
       setImgURL(null);
       console.log('image', image, 'category', category);
   } catch (err) {
-    alert(`Error adding item ${err}`)
+    console.error(`Error adding item ${err}`)
   } finally {
     navigate('/header');
   }

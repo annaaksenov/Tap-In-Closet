@@ -24,9 +24,9 @@ const navigate = useNavigate();
             <Link to="" className="cursor">
               Closet
             </Link>
-            {/* <Link to="/header/outfits" className="cursor">
+            <Link to="/header/outfits" className="cursor">
               Outfits
-            </Link> */}
+            </Link>
           </div>
         </div>
       </div>

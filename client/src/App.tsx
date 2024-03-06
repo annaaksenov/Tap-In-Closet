@@ -8,6 +8,7 @@ import { Header } from './Header';
 import { AddItem } from './AddItem';
 import { Closet } from './Closet';
 import { DressMe } from './DressMe';
+import { Outfits } from './Outfits';
 
 export default function App() {
 /* The current page that should display
@@ -52,7 +53,7 @@ return (
           }>
           <Route index element={<Closet />} />
           <Route path="dress-me" element={<DressMe />} />
-          {/* <Route path="outfits" element={<Outfits />} /> */}
+          <Route path="outfits" element={<Outfits />} />
         </Route>
         <Route
           path="add-item"

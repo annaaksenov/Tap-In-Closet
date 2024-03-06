@@ -1,6 +1,6 @@
 import { useEffect, useState, ChangeEvent, FormEvent } from "react";
+import { Outlet, useNavigate } from "react-router-dom";
 import { Carousel } from "./Carousel";
-import { Outlet } from 'react-router-dom';
 
 type Item = {
   itemId: number;
@@ -8,6 +8,7 @@ type Item = {
   category: string;
 };
 export function DressMe() {
+const navigate = useNavigate();
 const [layer, setLayer] = useState<Item[]>([]);
 const [top, setTop] = useState<Item[]>([]);
 const [bottom, setBottom] = useState<Item[]>([]);
@@ -59,7 +60,6 @@ useEffect(() => {
               break;
           }
         };
-
         categorizeItems('Layer', layer);
         categorizeItems('Top', top);
         categorizeItems('Bottom', bottom);
@@ -137,20 +137,65 @@ function handleSelect(e: ChangeEvent<HTMLInputElement>) {
   }
 }
 
-console.log('currentBottom', currentBottom);
- console.log('currentTop:', currentTop);
- console.log('currentLayer:', currentLayer);
- console.log('currDress:', currentDress);
- console.log('currShoes:', currentShoes);
+// console.log('currentBottom', currentBottom);
+//  console.log('currentTop:', currentTop);
+//  console.log('currentLayer:', currentLayer);
+//  console.log('currDress:', currentDress);
+//  console.log('currShoes:', currentShoes);
 
-function handleSaveOutfit(event: FormEvent<HTMLFormElement>) {
+async function handleSubmit(event: FormEvent<HTMLFormElement>) {
   event.preventDefault();
-}
+  try {
+        let toSave: Item[] = [];
+    if (currentLayer !== undefined) {
+      toSave.push(currentLayer);
+    }
+    if (currentTop !== undefined) {
+      toSave.push(currentTop);
+    }
+    if (currentBottom !== undefined) {
+      toSave.push(currentBottom);
+    }
+    if (currentDress !== undefined) {
+      toSave.push(currentDress);
+    }
+    if (currentShoes !== undefined) {
+      toSave.push(currentShoes);
+    }
+    if (currentAccessory !== undefined) {
+      toSave.push(currentAccessory);
+    }
+
+    const session = sessionStorage.getItem('token');
+      if (!session) {
+        throw new Error('Token not found');
+      }
+      const req = {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json', 'authorization': `Bearer ${session}`},
+        body: JSON.stringify(toSave),
+      };
+      const res = await fetch('/api/build/outfits', req);
+      if (!res.ok) {
+        throw new Error(`fetch Error ${res.status}`);
+      }
+      const {itemId, image, category} = await res.json();
+      if (!itemId || !image || !category) {
+        throw new Error(`fetch Error ${res.status}`)
+      }
+      console.log('itemId:', itemId, 'image:', image, 'category:', category);
+  } catch (err) {
+    console.error(`Error adding items ${err}`);
+    alert('Error building outfit. Please try again.');
+  } finally {
+    navigate('/header');
+  }
+};
 
   return (
     <>
       <div className="dressMe-container">
-        <form>
+        <form onSubmit={handleSubmit}>
           <div className="row">
             <div className="column-full d-flex justify-center">
               {layer.length > 0 && (<input
@@ -199,7 +244,7 @@ function handleSaveOutfit(event: FormEvent<HTMLFormElement>) {
           </div>
           <div className="row">
             <div className="column-full d-flex justify-center margin-top">
-              {(selectedCategories.length > 1) && (<button disabled onSubmit={handleSaveOutfit} className="green-button">Save</button>)}
+              {(selectedCategories.length > 1) && (<button type="submit" className="green-button">Save</button>)}
             </div>
           </div>
         </form>

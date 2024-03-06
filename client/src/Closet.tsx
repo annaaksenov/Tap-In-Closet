@@ -1,10 +1,9 @@
 // import { FiEdit } from "react-icons/fi";
 import { FaTrashAlt } from "react-icons/fa";
 import { CgAddR  } from "react-icons/cg";
-import { Link } from 'react-router-dom';
+import { Link, Outlet } from 'react-router-dom';
 import { useEffect, useState } from "react";
 import { Items } from './Items';
-import { Outlet } from 'react-router-dom';
 
 type Item = {
   itemId: number;
