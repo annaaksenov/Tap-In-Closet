@@ -35,7 +35,7 @@ useEffect(() => {
       return res.json();
      })
     .then((data) => {
-        const categorizeItems = (category: string, items: Item[]) => {
+        const categorizeItems = (category: string, []) => {
           const categorizedItems = data.filter((item: Item) => item.category === category);
           switch (category) {
             case 'Layer':
