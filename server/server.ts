@@ -138,7 +138,7 @@ app.post('/api/auth/login', async (req, res, next) => {
 app.get('/api/closet', authMiddleware, async (req, res, next) => {
   console.log('called GET for closet', req.user);
   try {
-     const sql = 'select * from "closet" where "userId" = $1  order by "itemId" desc;';
+     const sql = 'select * from "closet" where "userId" = $1 order by "itemId" desc;';
      const result = await db.query<User>(sql, [req.user?.userId]);
     res.status(201).json(result.rows);
   } catch (err) {
@@ -299,6 +299,24 @@ app.post('/api/build/outfits', authMiddleware, async (req, res, next) => {
   }
 })
 
+app.get('/api/grab/outfits', authMiddleware, async (req, res, next) => {
+ if (!req.user) {
+    throw new ClientError(401, 'not authenticated');
+  }
+  try {
+    const sql = `
+      SELECT "closet"."itemId", "closet"."image", "closet"."category", "outfitItems"."outfitId"
+      FROM "closet"
+      JOIN "outfitItems" ON "outfitItems"."itemId" = "closet"."itemId";`
+    const result = await db.query<Item>(sql);
+    res.status(201).json(result.rows);
+    console.log('result:', res.json(result.rows));
+  } catch (err) {
+    next(err);
+  }
+})
+
+// This will get back the current user's items used for outfits.
 app.get('/api/outfitItems', authMiddleware, async (req, res, next) => {
   if (!req.user) {
     throw new ClientError(401, 'not authenticated');
@@ -321,6 +339,7 @@ app.get('/api/outfitItems', authMiddleware, async (req, res, next) => {
 //   }
 // })
 
+// This will get back all existing user's outfits.
 app.get('/api/outfits', authMiddleware, async (req, res, next) => {
   try {
     const sql = 'select * from "outfits" where "userId" = $1 order by "outfitId" desc;';
