@@ -38,19 +38,6 @@ type Outfit = {
   userId: number;
 }
 
-// type Outfit = {
-//   outfitId: number;
-//   userId: number;
-//   itemId: number;
-//   image: string;
-//   category: string;
-// }
-
-// type Outfit = Item & {
-//  outfitId: number;
-// userId: number;
-//}
-
 const connectionString =
   process.env.DATABASE_URL ||
   `postgresql://${process.env.RDS_USERNAME}:${process.env.RDS_PASSWORD}@${process.env.RDS_HOSTNAME}:${process.env.RDS_PORT}/${process.env.RDS_DB_NAME}`;
@@ -138,7 +125,7 @@ app.post('/api/auth/login', async (req, res, next) => {
 app.get('/api/closet', authMiddleware, async (req, res, next) => {
   console.log('called GET for closet', req.user);
   try {
-     const sql = 'select * from "closet" where "userId" = $1 order by "itemId" desc;';
+    const sql = 'select * from "closet" where "userId" = $1 order by "itemId" desc;';
      const result = await db.query<User>(sql, [req.user?.userId]);
     res.status(201).json(result.rows);
   } catch (err) {
@@ -282,8 +269,6 @@ app.post('/api/build/outfits', authMiddleware, async (req, res, next) => {
     const params = [ userId ];
     const result = await db.query<Outfit>(sql, params);
     const outfitId = result.rows[0].outfitId;
-
-    // Iterate through the items in the request body and insert into outfitItems table
     const outfitArray = [];
     for (const item of req.body) {
       const { itemId } = item;
@@ -299,6 +284,7 @@ app.post('/api/build/outfits', authMiddleware, async (req, res, next) => {
   }
 })
 
+// Gets back the user's saved outfits.
 app.get('/api/grab/outfits', authMiddleware, async (req, res, next) => {
  if (!req.user) {
     throw new ClientError(401, 'not authenticated');
@@ -329,6 +315,66 @@ app.get('/api/outfitItems', authMiddleware, async (req, res, next) => {
     next(err);
   }
 })
+
+// Gets back specific outfit
+app.get('/api/outfitItems/:outfitId', authMiddleware, async (req, res, next) => {
+  if (!req.user) {
+    throw new ClientError(401, 'not authenticated');
+  }
+  try {
+    const outfitId = Number(req.params.outfitId);
+    if (!outfitId) {
+      throw new ClientError(400, 'outfitId must be a positive integer');
+    }
+    const outfitSql = 'select * from "outfits" where "outfitId" = $1;';
+    const outfitParam = [outfitId];
+    const outfitResult = await db.query<OutfitItems>(outfitSql, outfitParam);
+    const itemSQL = `
+      SELECT "closet"."itemId", "closet"."image", "closet"."category"
+      FROM "closet"
+      JOIN "outfitItems" ON "outfitItems"."itemId" = "closet"."itemId"
+      WHERE "outfitItems"."outfitId" = $1;`;
+      const itemParam = [outfitId];
+      const itemsResult = await db.query(itemSQL, itemParam);
+
+    res.status(201).json({ outfit: outfitResult.rows, items: itemsResult.rows });
+  } catch (err) {
+    next(err);
+  }
+})
+
+// Gets back a specific outfit
+// app.get('/api/outfitItems/:outfitId', authMiddleware, async (req, res, next) => {
+//   if (!req.user) {
+//     throw new ClientError(401, 'not authenticated');
+//   }
+//   try {
+//     const outfitId = Number(req.params.outfitId);
+//     if (!outfitId) {
+//       throw new ClientError(400, 'outfitId must be a positive integer');
+//     }
+//     const sql = 'select * from "outfitItems" where "outfitId" = $1;';
+//     const param = [outfitId];
+//     const result = await db.query<OutfitItems>(sql, param);
+//         if (!result.rows) {
+//       throw new ClientError(
+//         404, `Cannot find outfit with outfitId ${outfitId}`
+//       );
+//     }
+//     res.status(201).json(result.rows);
+//   } catch (err) {
+//     next(err);
+//   }
+// })
+
+// Update/change an outfit.
+app.put('/api/outfit/:outfitId', authMiddleware, async (req, res, next) => {
+  if (!req.user) {
+    throw new ClientError(401, 'not authenticated');
+  }
+  // Using outfitId, trace to the item in outfitItems and update with the new itemId from the closet.
+})
+
 // app.get('/api/outfitItems', authMiddleware, async (req, res, next) => {
 //   try {
 //     const sql = 'select * from "outfitItems" where "userId" = $1 order by "outfitId" desc;';

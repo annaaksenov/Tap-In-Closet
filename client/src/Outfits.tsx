@@ -1,6 +1,9 @@
-import { Outlet } from 'react-router-dom';
+import { Outlet, useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
-// import { FiEdit } from "react-icons/fi";
+import { FiEdit } from "react-icons/fi";
+import { FaTrashAlt } from "react-icons/fa";
+import { EditOutfit } from './EditOutfit';
+
 type Item = {
   itemId: number;
   image: string;
@@ -9,6 +12,7 @@ type Item = {
 };
 export function Outfits() {
   const [savedOutfit, setSavedOutfit] = useState<Item[]>([]);
+  const navigate = useNavigate();
 
  useEffect(() => {
     const session = sessionStorage.getItem('token');
@@ -19,11 +23,13 @@ export function Outfits() {
     fetch('/api/grab/outfits', req)
     .then((res) => res.json())
     .then((data) => {
-      //console.log('/api/grab/outfits data:', data);
+      //console.log(data);
       setSavedOutfit(data);
     })
+    .catch((err) => {
+        console.log(err);
+      });
  }, [])
-//console.log('savedOutfit:', savedOutfit);
   const groupedOutfits = savedOutfit.reduce((acc, outfit) => {
     const { outfitId } = outfit;
     if (!acc[outfitId]) {
@@ -32,14 +38,23 @@ export function Outfits() {
     acc[outfitId].push(outfit);
     return acc;
   }, {});
+
   return (
     <>
       <div className="outfit-container">
+
         {Object.keys(groupedOutfits).map((outfitId) => (
-        <div className="row">
-          <div className="column-full">
-            <h3>Outfit: {outfitId}</h3>
-            <ul key={outfitId} className="cat-row">
+        <div className="row d-block">
+          <div className="column-half d-flex align-center">
+            <h3 className="padding-right">Outfit {outfitId}</h3>
+            <FaTrashAlt className="padding-right" size="20px" cursor="pointer"/>
+            <FiEdit className="padding-right link" size="20px" cursor="pointer"
+              onClick={() => navigate(`/edit-outfit/${outfitId}`)}>
+              <EditOutfit/>
+            </FiEdit>
+          </div>
+          <div className="column-half">
+            <ul className="cat-row">
               {groupedOutfits[outfitId].map((outfit: object, index: number) => (
                 <li key={index}>
                   <img src={outfit.image} alt={outfit.category} className="item-img"/>

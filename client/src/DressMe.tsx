@@ -137,12 +137,6 @@ function handleSelect(e: ChangeEvent<HTMLInputElement>) {
   }
 }
 
-// console.log('currentBottom', currentBottom);
-//  console.log('currentTop:', currentTop);
-//  console.log('currentLayer:', currentLayer);
-//  console.log('currDress:', currentDress);
-//  console.log('currShoes:', currentShoes);
-
 async function handleSubmit(event: FormEvent<HTMLFormElement>) {
   event.preventDefault();
   try {
