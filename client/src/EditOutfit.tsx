@@ -26,9 +26,9 @@ const [currentShoes, setCurrentShoes] = useState<Item | undefined>();
 const [currentAccessory, setCurrentAccessory] = useState<Item | undefined>();
 
 const [outfit, setOutfit] = useState<Item[]>([]);
-console.log('outfit state', outfit);
+//console.log('outfit state', outfit);
 const [closet, setCloset] = useState<Item[]>([]);
-console.log('closet state', closet);
+//console.log('closet state', closet);
 
     useEffect(() => {
     const session = sessionStorage.getItem('token');
@@ -39,7 +39,7 @@ console.log('closet state', closet);
     fetch(`/api/outfitItems/${outfitId}`, req)
     .then((res) => { return res.json() })
     .then((data) => {
-      console.log('data.items', data.items);
+      //console.log('data.items', data.items);
       setOutfit(data.items);
       const uniqueCategories = new Set<string>();
       for (let i = 0; i < data.items.length; i++) {
@@ -76,7 +76,7 @@ console.log('closet state', closet);
       return res.json();
      })
     .then((data) => {
-      console.log('data closet', data);
+      //console.log('data closet', data);
       setCloset(data);
         const categorizeItems = (category: string, []) => {
           const categorizedItems = data.filter((item: Item) => item.category === category);
@@ -169,32 +169,33 @@ async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     if (currentAccessory !== undefined) {
       toSave.push(currentAccessory);
     }
-
+    console.log('toSave:', toSave, 'outfitId:', outfitId);
     const session = sessionStorage.getItem('token');
       if (!session) {
         throw new Error('Token not found');
       }
       const req = {
-        method: '',
+        method: 'PUT',
         headers: {'Content-Type': 'application/json', 'authorization': `Bearer ${session}`},
-        body: JSON.stringify(toSave),
+          body: JSON.stringify({outfitId, toSave}),
       };
-      const res = await fetch('/api/build/outfits', req);
+      const res = await fetch(`/api/update/${outfitId}`, req);
       if (!res.ok) {
         throw new Error(`fetch Error ${res.status}`);
       }
-      const {itemId, image, category} = await res.json();
-      if (!itemId || !image || !category) {
+      const {itemId} = await res.json();
+      if (!itemId) {
         throw new Error(`fetch Error ${res.status}`)
       }
-      console.log('itemId:', itemId, 'image:', image, 'category:', category);
+      console.log('itemId:', itemId);
   } catch (err) {
     console.error(`Error adding items ${err}`);
-    alert('Error building outfit. Please try again.');
+    alert('Error updating outfit. Please try again.');
   } finally {
     navigate('/header/outfits');
   }
 };
+
   return (
     <>
       <div className="edit-container">

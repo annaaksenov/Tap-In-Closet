@@ -283,7 +283,6 @@ app.post('/api/build/outfits', authMiddleware, async (req, res, next) => {
     next(err);
   }
 })
-
 // Gets back the user's saved outfits.
 app.get('/api/grab/outfits', authMiddleware, async (req, res, next) => {
  if (!req.user) {
@@ -301,7 +300,6 @@ app.get('/api/grab/outfits', authMiddleware, async (req, res, next) => {
     next(err);
   }
 })
-
 // This will get back the current user's items used for outfits.
 app.get('/api/outfitItems', authMiddleware, async (req, res, next) => {
   if (!req.user) {
@@ -315,7 +313,15 @@ app.get('/api/outfitItems', authMiddleware, async (req, res, next) => {
     next(err);
   }
 })
-
+app.get('/api/outfits', authMiddleware, async (req, res, next) => {
+  try {
+    const sql = 'select * from "outfits" where "userId" = $1 order by "outfitId" desc;';
+    const result = await db.query<User>(sql, [req.user?.userId]);
+    res.status(201).json(result.rows);
+  } catch (err) {
+    next(err);
+  }
+})
 // Gets back specific outfit
 app.get('/api/outfitItems/:outfitId', authMiddleware, async (req, res, next) => {
   if (!req.user) {
@@ -330,7 +336,7 @@ app.get('/api/outfitItems/:outfitId', authMiddleware, async (req, res, next) => 
     const outfitParam = [outfitId];
     const outfitResult = await db.query<OutfitItems>(outfitSql, outfitParam);
     const itemSQL = `
-      SELECT "closet"."itemId", "closet"."image", "closet"."category"
+      SELECT "closet"."itemId", "closet"."userId", "closet"."image", "closet"."category"
       FROM "closet"
       JOIN "outfitItems" ON "outfitItems"."itemId" = "closet"."itemId"
       WHERE "outfitItems"."outfitId" = $1;`;
@@ -343,36 +349,60 @@ app.get('/api/outfitItems/:outfitId', authMiddleware, async (req, res, next) => 
   }
 })
 
-// Gets back a specific outfit
-// app.get('/api/outfitItems/:outfitId', authMiddleware, async (req, res, next) => {
-//   if (!req.user) {
-//     throw new ClientError(401, 'not authenticated');
-//   }
-//   try {
-//     const outfitId = Number(req.params.outfitId);
-//     if (!outfitId) {
-//       throw new ClientError(400, 'outfitId must be a positive integer');
-//     }
-//     const sql = 'select * from "outfitItems" where "outfitId" = $1;';
-//     const param = [outfitId];
-//     const result = await db.query<OutfitItems>(sql, param);
-//         if (!result.rows) {
-//       throw new ClientError(
-//         404, `Cannot find outfit with outfitId ${outfitId}`
-//       );
-//     }
-//     res.status(201).json(result.rows);
-//   } catch (err) {
-//     next(err);
-//   }
-// })
-
-// Update/change an outfit.
-app.put('/api/outfit/:outfitId', authMiddleware, async (req, res, next) => {
+app.put('/api/update/:outfitId', authMiddleware, async (req, res) => {
+   console.log('body & user:', req.body, req.user, ClientError);
   if (!req.user) {
-    throw new ClientError(401, 'not authenticated');
+     throw new ClientError(400, 'not authenticated');
   }
-  // Using outfitId, trace to the item in outfitItems and update with the new itemId from the closet.
+  try {
+   const outfitId = Number(req.params.outfitId);
+   const { toSave } = req.body;
+    if (Number.isNaN(outfitId) || !Number.isInteger(outfitId) || outfitId < 1) {
+      throw new ClientError(400, 'outfitId must be a positive integer');
+    }
+  // const sql = `UPDATE "outfitItems" SET "itemId" = $1 WHERE "outfitId" = $2 RETURNING *`;
+  // const param = [req.body.itemId, outfitId];
+  // const result = await db.query<OutfitItems>(sql, param);
+  // const outfitArray = result.rows.map(row => ({
+  //     itemId: row.itemId,
+  //     outfitId: row.outfitId
+  // }));
+  //const { toSave } = req.body;
+const outfitArray = [];
+for (const item of toSave) {
+    const sql = `UPDATE "outfitItems" SET "itemId" = $1 WHERE "outfitId" = $2 returning *`;
+    const param = [item.itemId, outfitId];
+    const result = await db.query<OutfitItems>(sql, param);
+    outfitArray.push(result.rows);
+}
+    console.log({outfitId, outfitItems: outfitArray });
+    res.status(201).json({ outfitId, outfitItems: outfitArray });
+} catch (err) {
+    console.error('Error processing request:', err);
+    return res.status(500).json({ error: 'Internal server error' });
+  }
+})
+
+// Delete an outfit.
+app.delete('/api/delete/:outfitId', authMiddleware, async (req, res) => {
+if (!req.user) {
+  throw new ClientError(400, 'Not authenticated.');
+}
+ try {
+  const id = Number(req.params.outfitId);
+  if (Number.isNaN(id) || !Number.isInteger(id) || id < 1) {
+  throw new ClientError(400, 'id must be a positive integer');
+  }
+  const sql = `delete from "outfits" where "outfitId" = $1 returning *;`;
+  const params = [id];
+  await db.query(sql, params);
+  const sql2 = `delete from "outfitItems" where "outfitId" = $1 returning *;`;
+  await db.query(sql2, params);
+  res.sendStatus(204).send('Deleted');
+ } catch (err) {
+  console.error(err);
+  res.status(500).json({error: 'an unexpected error occurred.'});
+ }
 })
 
 // app.get('/api/outfitItems', authMiddleware, async (req, res, next) => {
@@ -386,15 +416,7 @@ app.put('/api/outfit/:outfitId', authMiddleware, async (req, res, next) => {
 // })
 
 // This will get back all existing user's outfits.
-app.get('/api/outfits', authMiddleware, async (req, res, next) => {
-  try {
-    const sql = 'select * from "outfits" where "userId" = $1 order by "outfitId" desc;';
-    const result = await db.query<User>(sql, [req.user?.userId]);
-    res.status(201).json(result.rows);
-  } catch (err) {
-    next(err);
-  }
-})
+
 /*
  * Middleware that handles paths that aren't handled by static middleware
  * or API route handlers.
