@@ -14,7 +14,8 @@
 }
 
 .closet-container,
-.dressMe-container {
+.dressMe-container,
+.outfit-container {
   margin: 0;
   padding: 10px 15px;
 }
@@ -23,7 +24,8 @@
   height: 100vh;
 }
 
-.add-item {
+.add-item,
+.edit-items {
   max-width: 500px;
   min-width: 500px;
   margin: 0 auto;
@@ -169,6 +171,10 @@ object-fit: cover;
 .padding-5 {
   padding-top: 5px;
   padding-left: 5px;
+}
+
+.padding-right {
+  padding-right: 8px;
 }
 
 .padding {

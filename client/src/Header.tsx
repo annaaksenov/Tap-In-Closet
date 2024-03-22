@@ -18,13 +18,13 @@ const navigate = useNavigate();
         </div>
         <div className="row tabs">
           <div className="column-full d-flex justify-between">
-          <Link to="/header/dress-me" className="cursor">
+          <Link to="/header/dress-me" className="cursor link">
               Dress me
             </Link>
-            <Link to="" className="cursor">
+            <Link to="" className="cursor link">
               Closet
             </Link>
-            <Link to="/header/outfits" className="cursor">
+            <Link to="/header/outfits" className="cursor link">
               Outfits
             </Link>
           </div>

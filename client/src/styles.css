@@ -4,7 +4,8 @@
 }
 
 .add-container,
-.header-container {
+.header-container,
+.edit-container {
   background-color: #D0ECAD
 }
 

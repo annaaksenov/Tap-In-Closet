@@ -9,6 +9,7 @@ import { AddItem } from './AddItem';
 import { Closet } from './Closet';
 import { DressMe } from './DressMe';
 import { Outfits } from './Outfits';
+import { EditOutfit } from './EditOutfit';
 
 export default function App() {
 /* The current page that should display
@@ -29,8 +30,6 @@ export default function App() {
     setIsAuthenticated(true);
   }
   useEffect(() => {
-    // Call server and/or check localStorage for authentication
-    // Then set auth state
       const token = sessionStorage.getItem('token');
       console.log('token', token);
       if (token) {
@@ -40,7 +39,7 @@ export default function App() {
 return (
     <>
     <Routes>
-        <Route path='/' element={<RegistrationForm/>}/>
+        <Route path='/' element={<RegistrationForm login={login}/>}/>
         <Route path='login' element={<LoginForm login={login}/>}/>
 
         <Route
@@ -60,6 +59,14 @@ return (
           element={
             <RequireAuth isAuthenticated={isAuthenticated}>
               <AddItem />
+            </RequireAuth>
+          }
+        />
+        <Route
+          path="edit-outfit/:outfitId"
+          element={
+            <RequireAuth isAuthenticated={isAuthenticated}>
+              <EditOutfit />
             </RequireAuth>
           }
         />
