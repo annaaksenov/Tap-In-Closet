@@ -23,9 +23,9 @@ values
 (3, 1, '/images/IMG_2625-1711044039026.JPEG', 'Bottom'),
 (4, 1, '/images/IMG_2293-1711044044809.JPEG', 'Bottom'),
 (5, 1, '/images/IMG_2628-1711044050332.JPEG', 'Bottom'),
-(5, 1, '/images/IMG_2307-1711044058685.JPEG', 'Shoes'),
-(6, 1, '/images/IMG_2629-1711044063247.JPEG', 'Shoes'),
-(7, 1, '/images/IMG_2295-1711044070741.JPEG', 'Dress');
+(6, 1, '/images/IMG_2307-1711044058685.JPEG', 'Shoes'),
+(7, 1, '/images/IMG_2629-1711044063247.JPEG', 'Shoes'),
+(8, 1, '/images/IMG_2295-1711044070741.JPEG', 'Dress');
 
 insert into "outfits"
 ("outfitId", "userId")
