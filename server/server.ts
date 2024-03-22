@@ -113,16 +113,19 @@ app.post('/api/auth/login', async (req, res, next) => {
     const params = [username]
     const result = await db.query<User>(sql, params);
     const [user] = result.rows;
+    console.log('user', user);
     if (!user) {
       throw new ClientError(401, 'invalid login.');
     }
     const { userId, hashedPassword } = user;
     const isPassword = await argon2.verify(hashedPassword, password);
+    console.log('isPass', isPassword);
     if (!isPassword) {
       throw new ClientError(401, 'invalid login.');
     }
     const payload = { userId, username };
     const token = jwt.sign(payload, hashKey);
+    console.log('toke', token,);
     res.status(200).json({token, user: payload});
   } catch (err) {
     next(err);
