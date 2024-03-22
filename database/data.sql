@@ -13,7 +13,7 @@
 insert into "users"
 ("userId", "username", "hashedPassword")
 values
-(1, 'cat', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsInVzZXJuYW1lIjoiY2F0IiwiaWF0IjoxNzExMDQzOTY4fQ.Mj_i-ZrqNzcgOTzb83n8QFpMSo3xeum0O0qgHK9KC6c');
+(1, 'cat', '$argon2i$v=19$m=4096,t=3,p=1$CUXMLgvFOJ8brF/VLbI4CA$K8Vf3M6no5UFP8upRayGduk5E247n0TrnmasjB6A5pg');
 
 insert into "closet"
 ("itemId", "userId", "image", "category")
