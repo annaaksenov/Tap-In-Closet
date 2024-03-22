@@ -132,29 +132,6 @@ app.post('/api/auth/login', async (req, res, next) => {
   }
 });
 
-app.post('/api/demo/:userId', async (req, res, next) => {
- try {
-    const id = req.params.userId;
-    const sql = 'select "userId", "hashedPassword" from "users" where "userId" = $1;';
-    const params = [id]
-    const result = await db.query<User>(sql, params);
-    const [user] = result.rows;
-    if (!user) {
-      throw new ClientError(401, 'invalid login.');
-    }
-    const { userId, hashedPassword } = user;
-    const isPassword = await argon2.verify(hashedPassword, password);
-    if (!isPassword) {
-      throw new ClientError(401, 'invalid login.');
-    }
-    const payload = { userId, username };
-    const token = jwt.sign(payload, hashKey);
-    res.status(200).json({token, user: payload});
-  } catch (err) {
-    next(err);
-  }
-});
-
 // Grabs all of user's clothing items.
 app.get('/api/closet', authMiddleware, async (req, res, next) => {
   console.log('called GET for closet', req.user);
