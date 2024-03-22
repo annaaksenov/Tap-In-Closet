@@ -39,23 +39,6 @@ console.log('savedOutfit', savedOutfit);
     return acc;
   }, {});
 
-//   const handleDeleteOutfit = (outfitId: string) => {
-//     const session = sessionStorage.getItem('token');
-//     const req = {
-//       method: 'DELETE',
-//       headers: {'authorization': `Bearer ${session}`},
-//     };
-//     fetch(`/api/delete/${outfitId}`, req)
-//     .then((res) => {
-//       if (res.status === 204) {
-//         // Delete was successful, remove the outfit from state
-//         setSavedOutfit(savedOutfit.filter(outfit => outfit.outfitId !== Number(outfitId)));
-//       }
-//     })
-//     .catch((err) => {
-//         console.log(err);
-//     });
-//  };
 async function handleDeleteOutfit(e: React.MouseEvent<HTMLButtonElement, MouseEvent>, outfitId: string) {
 e.preventDefault();
 try {
@@ -93,7 +76,7 @@ const session = sessionStorage.getItem('token');
           </div>
           <div className="column-half">
             <ul className="cat-row">
-              {groupedOutfits[outfitId].map((outfit: object, index: number) => (
+              {groupedOutfits[outfitId].map((outfit: Item, index: number) => (
                 <li key={index}>
                   <img src={outfit.image} alt={outfit.category} className="item-img"/>
                 </li>

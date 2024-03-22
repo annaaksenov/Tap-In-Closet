@@ -74,42 +74,6 @@ useEffect(() => {
 
 function handleSelect(e: ChangeEvent<HTMLInputElement>) {
     const { value, checked } = e.target;
-
-// const { value } = e.target;
-  // switch (value) {
-  //           case 'Layer':
-  //             setCurrentLayer(currentLayer);
-  //             console.log('currentLayer', currentLayer);
-  //             break;
-  //           case 'Top':
-  //             setCurrentTop(currentTop);
-  //             console.log('currentTop', currentTop);
-  //             break;
-  //           case 'Bottom':
-  //             setCurrentBottom(currentBottom);
-  //             console.log('currentBottom', currentBottom);
-  //             break;
-  //           case 'Dress':
-  //             setCurrentDress(currentDress);
-  //             console.log('currentDress', currentDress);
-  //             break;
-  //           case 'Shoes':
-  //             setCurrentShoes(currentShoes);
-  //             console.log('currentShoes', currentShoes);
-  //             break;
-  //           case 'Accessory':
-  //             setCurrentAccessory(currentAccessory);
-  //             console.log('currentAccessory', currentAccessory);
-  //             break;
-  //           default:
-  //             break;
-  //         }
-
-    // setSelectedCategories((prev) =>
-    //   prev.includes(value)
-    //     ? prev.filter((category) => category !== value)
-    //     : [...prev, value]
-    // );
     setSelectedCategories((prev) => checked ? [...prev, value] : prev.filter((category) => category !== value));
       if (!checked) {
     switch (value) {
@@ -173,11 +137,8 @@ async function handleSubmit(event: FormEvent<HTMLFormElement>) {
       if (!res.ok) {
         throw new Error(`fetch Error ${res.status}`);
       }
-      const {itemId, image, category} = await res.json();
-      if (!itemId || !image || !category) {
-        throw new Error(`fetch Error ${res.status}`)
-      }
-      console.log('itemId:', itemId, 'image:', image, 'category:', category);
+      const response = await res.json();
+      console.log('response:', response);
   } catch (err) {
     console.error(`Error adding items ${err}`);
     alert('Error building outfit. Please try again.');

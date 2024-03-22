@@ -25,9 +25,9 @@ const [currentDress, setCurrentDress] = useState<Item | undefined>();
 const [currentShoes, setCurrentShoes] = useState<Item | undefined>();
 const [currentAccessory, setCurrentAccessory] = useState<Item | undefined>();
 
-const [outfit, setOutfit] = useState<Item[]>([]);
+//const [outfit, setOutfit] = useState<Item[]>([]);
 //console.log('outfit state', outfit);
-const [closet, setCloset] = useState<Item[]>([]);
+//const [closet, setCloset] = useState<Item[]>([]);
 //console.log('closet state', closet);
 
     useEffect(() => {
@@ -40,7 +40,7 @@ const [closet, setCloset] = useState<Item[]>([]);
     .then((res) => { return res.json() })
     .then((data) => {
       //console.log('data.items', data.items);
-      setOutfit(data.items);
+      //setOutfit(data.items);
       const uniqueCategories = new Set<string>();
       for (let i = 0; i < data.items.length; i++) {
         const category = data.items[i].category;
@@ -77,7 +77,7 @@ const [closet, setCloset] = useState<Item[]>([]);
      })
     .then((data) => {
       //console.log('data closet', data);
-      setCloset(data);
+      //setCloset(data);
         const categorizeItems = (category: string, []) => {
           const categorizedItems = data.filter((item: Item) => item.category === category);
           switch (category) {

@@ -39,7 +39,7 @@ export default function App() {
 return (
     <>
     <Routes>
-        <Route path='/' element={<RegistrationForm/>}/>
+        <Route path='/' element={<RegistrationForm login={login}/>}/>
         <Route path='login' element={<LoginForm login={login}/>}/>
 
         <Route

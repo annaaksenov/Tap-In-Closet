@@ -1,7 +1,7 @@
 import { type FormEvent, useState } from "react";
 import { Link, useNavigate } from 'react-router-dom';
 
-export function RegistrationForm() {
+export function RegistrationForm({login}) {
 const navigate = useNavigate();
 const [isLoading, setIsLoading] = useState(false);
 
@@ -30,6 +30,29 @@ async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     navigate('/login');
   }
 }
+async function handleDemo() {
+  try {
+    const req = {
+      method: "POST",
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({username: 'demo'})
+    }
+    const res = await fetch(`/api/auth/login`, req);
+    if (!res.ok) {
+      throw new Error(`fetch Error ${res.status}`);
+    }
+    const { user, token } = await res.json();
+    sessionStorage.setItem('token', token);
+    console.log('Signed In', user, '; received token:', token);
+  } catch (err) {
+    console.error('Error inserting dummy data:', err);
+  } finally {
+    setIsLoading(false);
+    navigate('/header');
+    login();
+  }
+}
+
   return (
     <>
     <div className="register-container ">
@@ -64,7 +87,13 @@ async function handleSubmit(event: FormEvent<HTMLFormElement>) {
           <div className="align-column margin-bottom">
             <Link to="/login">Login</Link>
           </div>
+          <div className="align-column">
+            <p>---- OR ----</p>
+          </div>
+         <div className="align-column margin-bottom">
+          <button onClick={handleDemo}>DEMO</button>
         </div>
+      </div>
     </div>
     </>
   )

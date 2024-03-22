@@ -17,37 +17,6 @@ const [dress, setDress] = useState<Item[]>([]);
 const [shoes, setShoes] = useState<Item[]>([]);
 const [accessory, setAccessory] = useState<Item[]>([]);
 
-/*{useEffect(() => {
-    const session = sessionStorage.getItem('token');
-    const req = {
-      method: 'GET',
-      headers: {'authorization': `Bearer ${session}`},
-    }
-    fetch('/api/closet', req)
-    .then((res) => {
-      return res.json();
-    })
-    .then((data) => {
-      console.log('data', data);
-      for (let i = 0; i < data.length; i++) {
-        if (data[i].category === 'Layer') {
-          setLayer([...layer, data[i]]);
-        } else if (data[i].category === 'Top') {
-          setTop([...top, data[i]]);
-        } else if (data[i].category === 'Bottom') {
-          setBottom([...bottom, data[i]]);
-        } else if (data[i].category === 'Dress') {
-          setDress([...dress, data[i]]);
-        } else if (data[i].category === 'Shoes') {
-          setShoes([...shoes, data[i]]);
-        } else if (data[i].category === 'Accessory') {
-          setAccessory([...accessory, data[i]]);
-        }
-      }})
-    .catch((err) => {
-      console.log(err);
-  })
-}, []);}*/
  useEffect(() => {
     const session = sessionStorage.getItem('token');
     const req = {
@@ -95,6 +64,27 @@ const [accessory, setAccessory] = useState<Item[]>([]);
         console.log(err);
       });
   }, []);
+
+//   async function handleDeleteOutfit(e: React.MouseEvent<HTMLButtonElement, MouseEvent>, outfitId: string) {
+// e.preventDefault();
+// try {
+// const session = sessionStorage.getItem('token');
+//     const req = {
+//       method: 'DELETE',
+//       headers: {'authorization': `Bearer ${session}`},
+//     };
+//     const response = await fetch(`/api/delete/${outfitId}`, req);
+//     if (response.status === 204) {
+//         // Delete was successful, remove the outfit from state
+//         setSavedOutfit(savedOutfit.filter(outfit => outfit.outfitId !== Number(outfitId)));
+//     } else {
+//         console.log('Failed to delete outfit');
+//     }
+//   } catch(err) {
+//     console.error(err);
+//   }
+// };
+
   return (
     <>
     <div className="closet-container">
