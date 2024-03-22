@@ -97,6 +97,7 @@ app.post('/api/auth/sign-up', async (req, res, next) => {
 });
 
 app.post('/api/auth/login', async (req, res, next) => {
+  console.log('req.body:', req.body);
   const demoUser = {username: 'cat', password: '1'};
   try {
     let { username, password } = req.body as Partial<Auth>;
@@ -104,6 +105,7 @@ app.post('/api/auth/login', async (req, res, next) => {
       username = demoUser.username;
       password = demoUser.password;
     }
+    console.log('user & pass', username, password);
     if (!username || !password) {
       throw new ClientError(401, 'invalid login');
     }
