@@ -20,7 +20,7 @@ With Tap-In-Closet, you can effortlessly upload your clothing items and promptly
 
 ## Live Demo
 
-Try the application live at [[https://student-grade-table.lfz.com](https://student-grade-table.lfz.com)](http://tap-in-closet-dev.us-west-1.elasticbeanstalk.com/)
+Try the application live at (http://tap-in-closet-dev.us-west-1.elasticbeanstalk.com/)
 
 ## Features
 
