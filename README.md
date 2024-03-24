@@ -1,4 +1,4 @@
-# student-grade-table
+# Tap-In-Closet
 
 A full-stack web application tailored for individuals seeking a stress-free dressing experience, allowing them to effortlessly access their entire wardrobe catalog and curate outfits seamlessly.
 
@@ -14,9 +14,9 @@ With Tap-In-Closet, you can effortlessly upload your clothing items and promptly
 - HTTP
 - Node.js
 - PostgreSQl
+- TypeScript
 - HTML5
 - CSS3
-- TypeScript
 
 ## Live Demo
 
