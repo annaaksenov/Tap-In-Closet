@@ -13,7 +13,7 @@ With Tap-In-Closet, you can effortlessly upload your clothing items and promptly
 - React.js
 - HTTP
 - Node.js
-- PostgreSQl
+- PostgreSQL
 - TypeScript
 - HTML5
 - CSS3
